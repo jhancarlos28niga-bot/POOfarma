@@ -17,6 +17,7 @@ public class menu extends javax.swing.JFrame {
     int xMouse,yMouse;
     public menu() {
         initComponents();
+        contenido .setLayout(new BorderLayout());
         
     }
 
@@ -53,9 +54,9 @@ public class menu extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(45, 78, 155));
 
-        principalbtn.setBackground(new java.awt.Color(45, 78, 155));
+        principalbtn.setBackground(new java.awt.Color(153, 153, 255));
 
-        principalbtnText.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
+        principalbtnText.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         principalbtnText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         principalbtnText.setText("PRINCIPAL");
         principalbtnText.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -81,9 +82,9 @@ public class menu extends javax.swing.JFrame {
             .addComponent(principalbtnText, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
         );
 
-        medicamentosbtn.setBackground(new java.awt.Color(45, 78, 155));
+        medicamentosbtn.setBackground(new java.awt.Color(153, 153, 255));
 
-        medicamentosText.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
+        medicamentosText.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         medicamentosText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         medicamentosText.setText("MEDICAMENTOS");
         medicamentosText.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -102,17 +103,17 @@ public class menu extends javax.swing.JFrame {
         medicamentosbtn.setLayout(medicamentosbtnLayout);
         medicamentosbtnLayout.setHorizontalGroup(
             medicamentosbtnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(medicamentosText, javax.swing.GroupLayout.DEFAULT_SIZE, 133, Short.MAX_VALUE)
+            .addComponent(medicamentosText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         medicamentosbtnLayout.setVerticalGroup(
             medicamentosbtnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(medicamentosText, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE)
         );
 
-        ventasbtn.setBackground(new java.awt.Color(45, 78, 155));
+        ventasbtn.setBackground(new java.awt.Color(153, 153, 255));
 
         ventasText.setBackground(new java.awt.Color(45, 78, 155));
-        ventasText.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
+        ventasText.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         ventasText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         ventasText.setText("VENTAS");
         ventasText.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -138,10 +139,10 @@ public class menu extends javax.swing.JFrame {
             .addComponent(ventasText, javax.swing.GroupLayout.DEFAULT_SIZE, 44, Short.MAX_VALUE)
         );
 
-        inventariobtn.setBackground(new java.awt.Color(45, 78, 155));
+        inventariobtn.setBackground(new java.awt.Color(153, 153, 255));
 
         inventarioText.setBackground(new java.awt.Color(45, 78, 155));
-        inventarioText.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
+        inventarioText.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         inventarioText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         inventarioText.setText("INVENTARIO");
         inventarioText.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -169,7 +170,7 @@ public class menu extends javax.swing.JFrame {
 
         reportebtn.setBackground(new java.awt.Color(45, 78, 155));
 
-        reporteText.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
+        reporteText.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         reporteText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         reporteText.setText("REPORTES");
         reporteText.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -197,7 +198,7 @@ public class menu extends javax.swing.JFrame {
 
         exitbtn.setBackground(new java.awt.Color(45, 78, 155));
 
-        exitText.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
+        exitText.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         exitText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         exitText.setText("SALIR");
         exitText.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -226,6 +227,7 @@ public class menu extends javax.swing.JFrame {
         jPanel3.setBackground(new java.awt.Color(45, 78, 155));
 
         jLabel1.setBackground(new java.awt.Color(45, 78, 155));
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("MOVER");
         jLabel1.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
@@ -242,7 +244,7 @@ public class menu extends javax.swing.JFrame {
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 22, Short.MAX_VALUE)
+            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -282,11 +284,11 @@ public class menu extends javax.swing.JFrame {
         contenido.setLayout(contenidoLayout);
         contenidoLayout.setHorizontalGroup(
             contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 526, Short.MAX_VALUE)
+            .addGap(0, 663, Short.MAX_VALUE)
         );
         contenidoLayout.setVerticalGroup(
             contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 600, Short.MAX_VALUE)
+            .addGap(0, 700, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout jpPrincipalLayout = new javax.swing.GroupLayout(jpPrincipal);
@@ -295,8 +297,8 @@ public class menu extends javax.swing.JFrame {
             jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpPrincipalLayout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 144, Short.MAX_VALUE)
-                .addComponent(contenido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(contenido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jpPrincipalLayout.setVerticalGroup(
             jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -323,7 +325,7 @@ public class menu extends javax.swing.JFrame {
     }//GEN-LAST:event_principalbtnTextMouseEntered
 
     private void principalbtnTextMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_principalbtnTextMouseExited
-        principalbtn.setBackground(new Color(45,78,155));     
+        principalbtn.setBackground(new Color(153,153,255));     
     }//GEN-LAST:event_principalbtnTextMouseExited
 
     private void medicamentosTextMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_medicamentosTextMouseEntered
@@ -331,7 +333,7 @@ public class menu extends javax.swing.JFrame {
     }//GEN-LAST:event_medicamentosTextMouseEntered
 
     private void medicamentosTextMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_medicamentosTextMouseExited
-        medicamentosbtn.setBackground(new Color(45,78,155)); 
+        medicamentosbtn.setBackground(new Color(153,153,255)); 
     }//GEN-LAST:event_medicamentosTextMouseExited
 
     private void ventasTextMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ventasTextMouseEntered
@@ -339,7 +341,7 @@ public class menu extends javax.swing.JFrame {
     }//GEN-LAST:event_ventasTextMouseEntered
 
     private void ventasTextMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ventasTextMouseExited
-        ventasbtn.setBackground(new Color(45,78,155));
+        ventasbtn.setBackground(new Color(153,153,255));
     }//GEN-LAST:event_ventasTextMouseExited
 
     private void inventarioTextMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_inventarioTextMouseEntered
@@ -347,7 +349,7 @@ public class menu extends javax.swing.JFrame {
     }//GEN-LAST:event_inventarioTextMouseEntered
 
     private void inventarioTextMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_inventarioTextMouseExited
-        inventariobtn.setBackground(new Color(45,78,155));
+        inventariobtn.setBackground(new Color(153,153,255));
     }//GEN-LAST:event_inventarioTextMouseExited
 
     private void reporteTextMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reporteTextMouseEntered
@@ -355,7 +357,7 @@ public class menu extends javax.swing.JFrame {
     }//GEN-LAST:event_reporteTextMouseEntered
 
     private void reporteTextMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reporteTextMouseExited
-        reportebtn.setBackground(new Color(45,78,155));
+        reportebtn.setBackground(new Color(153,153,255));
     }//GEN-LAST:event_reporteTextMouseExited
 
     private void exitTextMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exitTextMouseEntered
@@ -363,7 +365,7 @@ public class menu extends javax.swing.JFrame {
     }//GEN-LAST:event_exitTextMouseEntered
 
     private void exitTextMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exitTextMouseExited
-        exitbtn.setBackground(new Color(45,78,155));
+        exitbtn.setBackground(new Color(153,153,255));
     }//GEN-LAST:event_exitTextMouseExited
 
     private void exitTextMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exitTextMouseClicked
@@ -374,9 +376,6 @@ public class menu extends javax.swing.JFrame {
 
         principal p = new principal();
 
-        p.setSize(680,580);
-        p.setLocation(0,0);
-
         contenido.removeAll();
         contenido.add(p, BorderLayout.CENTER);
         contenido.revalidate();
@@ -385,13 +384,12 @@ public class menu extends javax.swing.JFrame {
 
     private void medicamentosTextMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_medicamentosTextMouseClicked
         
+        
         medicamentos medi = new medicamentos();
 
-        medi.setSize(680,580);
-        medi.setLocation(0,0);
-
+    
         contenido.removeAll();
-        contenido.add(medi, BorderLayout.CENTER);
+        contenido.add(medi,BorderLayout.CENTER);
         contenido.revalidate();
         contenido.repaint();
     }//GEN-LAST:event_medicamentosTextMouseClicked
@@ -399,9 +397,7 @@ public class menu extends javax.swing.JFrame {
     private void ventasTextMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ventasTextMouseClicked
         ventas venta = new ventas();
 
-        venta.setSize(680,580);
-        venta.setLocation(0,0);
-
+      
         contenido.removeAll();
         contenido.add(venta, BorderLayout.CENTER);
         contenido.revalidate();
@@ -411,8 +407,7 @@ public class menu extends javax.swing.JFrame {
     private void inventarioTextMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_inventarioTextMouseClicked
         inventario inventa = new inventario();
 
-        inventa.setSize(680,580);
-        inventa.setLocation(0,0);
+       
 
         contenido.removeAll();
         contenido.add(inventa, BorderLayout.CENTER);
@@ -423,9 +418,7 @@ public class menu extends javax.swing.JFrame {
     private void reporteTextMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reporteTextMouseClicked
          reportes reporte = new reportes();
 
-         reporte.setSize(680,580);
-         reporte.setLocation(0,0);
-
+         
          contenido.removeAll();
          contenido.add(reporte, BorderLayout.CENTER);
          contenido.revalidate();
