@@ -14,7 +14,9 @@ public class reportes extends javax.swing.JPanel {
      * Creates new form reportes
      */
     public reportes() {
+        System.out.println("Entró al constructor reportes");
         initComponents();
+        System.out.println("Salió del constructor reportes");
     }
 
     /**
