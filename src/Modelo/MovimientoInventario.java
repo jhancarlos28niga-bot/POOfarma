@@ -76,4 +76,6 @@ public class MovimientoInventario {
         this.observacion = observacion;
     }
     
+    
+    
 }

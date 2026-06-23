@@ -8,6 +8,7 @@ import DAO.ClientesDAO;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import Modelo.Cliente;
+import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
 
 
@@ -58,6 +59,7 @@ public class Clientes extends javax.swing.JPanel {
         txtTelefono.setText("");
         txtDNI.requestFocus();
         idSeleccionado = 0;
+        txtDNI.setEditable(true);
     }
 
     /**
@@ -131,6 +133,24 @@ public class Clientes extends javax.swing.JPanel {
         });
         jScrollPane1.setViewportView(jtableClientes);
 
+        txtDNI.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtDNIKeyTyped(evt);
+            }
+        });
+
+        txtNombre.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtNombreKeyTyped(evt);
+            }
+        });
+
+        txtTelefono.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtTelefonoKeyTyped(evt);
+            }
+        });
+
         btnEliminar.setText("ELIMINAR");
         btnEliminar.addActionListener(this::btnEliminarActionPerformed);
 
@@ -140,6 +160,11 @@ public class Clientes extends javax.swing.JPanel {
         txtBuscar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 txtBuscarMouseClicked(evt);
+            }
+        });
+        txtBuscar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtBuscarKeyTyped(evt);
             }
         });
 
@@ -233,41 +258,67 @@ public class Clientes extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+      try
+      {
         if(txtDNI.getText().trim().isEmpty())
-       {
-           JOptionPane.showMessageDialog(null,"Ingresar DNI");
-           return;
-       }
-       if(txtNombre.getText().trim().isEmpty())
-       {
-            JOptionPane.showMessageDialog(null,"Ingresar Nombre");
-            return;
-       }
-       if(txtTelefono.getText().trim().isEmpty())
-       {
-           JOptionPane.showMessageDialog(null,"Ingrese número telefonico");
-           return;
-       }
-       Cliente clie = new Cliente();
-       clie.setDNI(txtDNI.getText().trim());
-       clie.setNombre(txtNombre.getText().trim());
-       clie.setTelefono(txtTelefono.getText().trim());
-       ClientesDAO dao = new ClientesDAO();
-       if(dao.existeDNI(txtDNI.getText().trim()))
         {
-            JOptionPane.showMessageDialog(null,"El DNI ya se encuentra registrado");
+            JOptionPane.showMessageDialog(null,"Ingresar DNI");
             return;
         }
-        if(dao.guardar(clie))
+        if(txtNombre.getText().trim().isEmpty())
         {
-            JOptionPane.showMessageDialog( null,"Cliente registrado correctamente");
-            listarClientes();
-            Limpiar();    
+             JOptionPane.showMessageDialog(null,"Ingresar Nombre");
+             return;
+        }
+        if(txtTelefono.getText().trim().isEmpty())
+        {
+            JOptionPane.showMessageDialog(null,"Ingrese número telefonico");
+            return;
+        }
+        if(!txtDNI.getText().trim().matches("\\d{8}"))
+        {
+            JOptionPane.showMessageDialog(null,
+                    "El DNI debe tener 8 dígitos");
+            return;
+        }
+        if(!txtNombre.getText().trim().matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+"))
+        {
+            JOptionPane.showMessageDialog(null,
+                    "El nombre solo debe contener letras");
+            return;
+        }
+        if(!txtTelefono.getText().trim().matches("\\d{9}"))
+        {
+            JOptionPane.showMessageDialog(null,
+                    "El teléfono debe tener 9 dígitos");
+            return;
+        }
+        
+        Cliente clie = new Cliente();
+        clie.setDNI(txtDNI.getText().trim());
+        clie.setNombre(txtNombre.getText().trim());
+        clie.setTelefono(txtTelefono.getText().trim());
+        ClientesDAO dao = new ClientesDAO();
+        if(dao.existeDNI(txtDNI.getText().trim()))
+         {
+             JOptionPane.showMessageDialog(null,"El DNI ya se encuentra registrado");
+             return;
+         }
+         if(dao.guardar(clie))
+         {
+             JOptionPane.showMessageDialog( null,"Cliente registrado correctamente");
+             listarClientes();
+             Limpiar();    
 
-        }else
-        {
-            JOptionPane.showMessageDialog( null,"Error al registrar cliente");
-        } 
+         }else
+         {
+             JOptionPane.showMessageDialog( null,"Error al registrar cliente");
+         } 
+      }catch(Exception e)
+      {
+          JOptionPane.showMessageDialog(null,"Error inesperado: " + e.getMessage());
+      } 
+        
         // TODO add your handling code here:
     }//GEN-LAST:event_btnGuardarActionPerformed
 
@@ -277,58 +328,87 @@ public class Clientes extends javax.swing.JPanel {
         txtDNI.setText(jtableClientes.getValueAt(fila,1).toString());
         txtNombre.setText(jtableClientes.getValueAt(fila,2).toString());
         txtTelefono.setText(jtableClientes.getValueAt(fila,3).toString());
+        txtDNI.setEditable(false);
         // TODO add your handling code here:
     }//GEN-LAST:event_jtableClientesMouseClicked
 
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
-        if(idSeleccionado == 0)
+        try
         {
-            JOptionPane.showMessageDialog(null,"Seleccione un cliente");
-            return;
-        }
-         if(txtDNI.getText().trim().isEmpty())
-        {
-            JOptionPane.showMessageDialog( null,"Ingrese el DNI");
-            return;
-        }
+            if(idSeleccionado == 0)
+            {
+                JOptionPane.showMessageDialog(null,"Seleccione un cliente");
+                return;
+            }
+             if(txtDNI.getText().trim().isEmpty())
+            {
+                JOptionPane.showMessageDialog( null,"Ingrese el DNI");
+                return;
+            }
 
-        if(txtNombre.getText().trim().isEmpty())
-        {
-            JOptionPane.showMessageDialog(null,"Ingrese el nombre");
-            return;
-        }
+            if(txtNombre.getText().trim().isEmpty())
+            {
+                JOptionPane.showMessageDialog(null,"Ingrese el nombre");
+                return;
+            }
 
-        if(txtTelefono.getText().trim().isEmpty())
+            if(txtTelefono.getText().trim().isEmpty())
+            {
+                JOptionPane.showMessageDialog( null,"Ingrese número de Telefono");
+                return;
+            }
+            if(!txtDNI.getText().trim().matches("\\d{8}"))
+            {
+                JOptionPane.showMessageDialog(null,
+                        "El DNI debe tener 8 dígitos");
+                return;
+            }
+
+            if(!txtNombre.getText().trim().matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+"))
+            {
+                JOptionPane.showMessageDialog(null,
+                        "El nombre solo debe contener letras");
+                return;
+            }
+
+            if(!txtTelefono.getText().trim().matches("\\d{9}"))
+            {
+                JOptionPane.showMessageDialog(null,
+                        "El teléfono debe tener 9 dígitos");
+                return;
+            }
+
+            Cliente clie = new Cliente();
+
+            clie.setID_Cliente(idSeleccionado);
+            clie.setDNI(txtDNI.getText().trim());
+            clie.setNombre(txtNombre.getText().trim());
+            clie.setTelefono(txtTelefono.getText().trim());
+            ClientesDAO dao = new ClientesDAO();
+            if(dao.actualizar(clie))
+            {
+                JOptionPane.showMessageDialog(null,"Cliente actualizado correctamente");
+
+                listarClientes();
+                Limpiar();
+
+            }
+            else
+            {
+                JOptionPane.showMessageDialog( null,"No se pudo actualizar");
+            }
+        }catch(Exception e)
         {
-            JOptionPane.showMessageDialog( null,"Ingrese el Telefono");
-            return;
+            JOptionPane.showMessageDialog(null,"Error inesperado: " + e.getMessage());
         }
-        Cliente clie = new Cliente();
         
-        clie.setID_Cliente(idSeleccionado);
-        clie.setDNI(txtDNI.getText().trim());
-        clie.setNombre(txtNombre.getText().trim());
-        clie.setTelefono(txtTelefono.getText().trim());
-        ClientesDAO dao = new ClientesDAO();
-        if(dao.actualizar(clie))
-        {
-            JOptionPane.showMessageDialog(null,"Cliente actualizado correctamente");
-
-            listarClientes();
-            Limpiar();
-            
-        }
-        else
-        {
-            JOptionPane.showMessageDialog( null,"No se pudo actualizar");
-        }
         // TODO add your handling code here:
     }//GEN-LAST:event_btnActualizarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         if(idSeleccionado == 0)
         {
-            JOptionPane.showMessageDialog( null,"Seleccione un medicamento");
+            JOptionPane.showMessageDialog( null,"Seleccione un Cliente");
             return;
         }
         int respuesta = JOptionPane.showConfirmDialog(null,"¿Desea eliminar a este Cliente?","Confirmar eliminación", JOptionPane.YES_NO_OPTION);
@@ -354,6 +434,8 @@ public class Clientes extends javax.swing.JPanel {
     }//GEN-LAST:event_txtBuscarMouseClicked
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+        try
+        {
         String dni = txtBuscar.getText().trim();
         if(!dni.matches("\\d{8}"))
         {
@@ -371,6 +453,11 @@ public class Clientes extends javax.swing.JPanel {
         {
             areaBuscar.setText("Cliente no registrado");
         }
+        }catch(Exception e)
+        {
+            JOptionPane.showMessageDialog(null,"Error al buscar: " + e.getMessage());
+        }
+        
         // TODO add your handling code here:
     }//GEN-LAST:event_btnBuscarActionPerformed
 
@@ -381,6 +468,59 @@ public class Clientes extends javax.swing.JPanel {
         jtableClientes.clearSelection();
         // TODO add your handling code here:
     }//GEN-LAST:event_btnLimpiarActionPerformed
+
+    private void txtBuscarKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscarKeyTyped
+        char c = evt.getKeyChar();
+        if(!Character.isDigit(c))
+        {
+            evt.consume();
+        }
+
+        if(txtBuscar.getText().length() >= 8)
+        {
+            evt.consume();
+        }
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtBuscarKeyTyped
+
+    private void txtTelefonoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTelefonoKeyTyped
+        char c = evt.getKeyChar();
+        if(!Character.isDigit(c))
+        {
+            evt.consume();
+        }
+
+        if(txtTelefono.getText().length() >= 9)
+        {
+            evt.consume();
+        }
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtTelefonoKeyTyped
+
+    private void txtNombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombreKeyTyped
+        char c = evt.getKeyChar();
+
+        if(!Character.isLetter(c)
+                && c != KeyEvent.VK_SPACE)
+        {
+            evt.consume();
+        }
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtNombreKeyTyped
+
+    private void txtDNIKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDNIKeyTyped
+        char c = evt.getKeyChar();
+        if(!Character.isDigit(c))
+        {
+            evt.consume();
+        }
+
+        if(txtDNI.getText().length() >= 8)
+        {
+            evt.consume();
+        }
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtDNIKeyTyped
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

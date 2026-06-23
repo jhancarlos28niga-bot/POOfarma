@@ -67,7 +67,7 @@ public class MovimientoInventariosDAO {
                 mov.setTipoMovimiento(rs.getString("TipoMovimiento"));
                 mov.setFechaMovimiento(rs.getString("FechaMovimiento"));
                 mov.setObservacion(rs.getString("Observacion"));
-
+                mov.setCantidad(rs.getInt("Cantidad"));
                 lista.add(mov);
             }
         }
@@ -75,6 +75,47 @@ public class MovimientoInventariosDAO {
         {
             JOptionPane.showMessageDialog(null,e.getMessage());
         }
+        return lista;
+    }
+    public List<MovimientoInventario> listarPorMedicamento(int idMedicamento)
+    {
+        List<MovimientoInventario> lista = new ArrayList<>();
+
+        String sql = "SELECT * FROM MovimientoInventario "
+                   + "WHERE ID_Medicamento = ? "
+                   + "ORDER BY FechaMovimiento DESC";
+
+        try
+        {
+            Connection con = cn.conectar();
+
+            PreparedStatement ps = con.prepareStatement(sql);
+
+            ps.setInt(1, idMedicamento);
+
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next())
+            {
+                MovimientoInventario mov = new MovimientoInventario();
+
+                mov.setIdMovimiento(rs.getInt("ID_Movimiento"));
+                mov.setIdMedicamento(rs.getInt("ID_Medicamento"));
+                mov.setTipoMovimiento(rs.getString("TipoMovimiento"));
+                mov.setCantidad(rs.getInt("Cantidad"));
+                mov.setFechaMovimiento(rs.getString("FechaMovimiento"));
+                mov.setObservacion(rs.getString("Observacion"));
+
+                lista.add(mov);
+            }
+        }
+        catch(SQLException e)
+        {
+            JOptionPane.showMessageDialog(null,
+                    "Error al listar movimientos: "
+                    + e.getMessage());
+        }
+
         return lista;
     }
     

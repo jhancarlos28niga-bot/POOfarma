@@ -4,7 +4,10 @@
  */
 package hesilfarma;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.Locale;
@@ -20,12 +23,16 @@ public class Hesil extends javax.swing.JFrame {
     int xMouse,yMouse;
     public Hesil() {
         initComponents();
+        principalventana.setLayout(new BorderLayout());
+        Dimension pantalla = Toolkit.getDefaultToolkit().getScreenSize();
+        Dimension ventana = getSize();
+        setLocation((pantalla.width - ventana.width) / 2, (pantalla.height - ventana.height) / 2);
     }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        bg = new javax.swing.JPanel();
+        principalventana = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -45,27 +52,27 @@ public class Hesil extends javax.swing.JFrame {
         setUndecorated(true);
         setResizable(false);
 
-        bg.setBackground(new java.awt.Color(255, 255, 255));
-        bg.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        principalventana.setBackground(new java.awt.Color(255, 255, 255));
+        principalventana.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/images/hersil-sa-AA2309BD69786C2E233630thumbnail.jpeg"))); // NOI18N
-        bg.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 380, 470, 190));
+        principalventana.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 380, 470, 190));
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(0, 0, 0));
         jLabel2.setText("INICIAR SESIÓN");
-        bg.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 60, 290, 50));
+        principalventana.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 60, 290, 50));
 
         jLabel3.setBackground(new java.awt.Color(0, 0, 0));
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(0, 0, 0));
         jLabel3.setText("USUARIO");
-        bg.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 130, -1, -1));
+        principalventana.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 130, -1, -1));
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(0, 0, 0));
         jLabel4.setText("CONTRASEÑA");
-        bg.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 210, -1, -1));
+        principalventana.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 210, -1, -1));
 
         txtUsuario.setBackground(new java.awt.Color(255, 255, 255));
         txtUsuario.setText("Ingrese su nombre de Usuario");
@@ -75,9 +82,9 @@ public class Hesil extends javax.swing.JFrame {
                 txtUsuarioMousePressed(evt);
             }
         });
-        bg.add(txtUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 170, -1, -1));
-        bg.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 190, 380, 10));
-        bg.add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 260, 380, 10));
+        principalventana.add(txtUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 170, -1, -1));
+        principalventana.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 190, 380, 10));
+        principalventana.add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 260, 380, 10));
 
         txtContraseña.setBackground(new java.awt.Color(255, 255, 255));
         txtContraseña.setText("********");
@@ -87,7 +94,7 @@ public class Hesil extends javax.swing.JFrame {
                 txtContraseñaMousePressed(evt);
             }
         });
-        bg.add(txtContraseña, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 240, -1, -1));
+        principalventana.add(txtContraseña, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 240, -1, -1));
 
         loginbtn.setBackground(new java.awt.Color(45, 78, 155));
         loginbtn.setForeground(new java.awt.Color(0, 0, 0));
@@ -123,7 +130,7 @@ public class Hesil extends javax.swing.JFrame {
                 .addComponent(loginbtnTX, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        bg.add(loginbtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 310, 100, 40));
+        principalventana.add(loginbtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 310, 100, 40));
 
         header.setBackground(new java.awt.Color(255, 255, 255));
         header.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
@@ -182,17 +189,17 @@ public class Hesil extends javax.swing.JFrame {
                 .addGap(0, 17, Short.MAX_VALUE))
         );
 
-        bg.add(header, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 640, 50));
+        principalventana.add(header, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 640, 50));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(bg, javax.swing.GroupLayout.PREFERRED_SIZE, 637, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(principalventana, javax.swing.GroupLayout.PREFERRED_SIZE, 637, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(bg, javax.swing.GroupLayout.PREFERRED_SIZE, 614, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(principalventana, javax.swing.GroupLayout.PREFERRED_SIZE, 614, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
@@ -319,7 +326,6 @@ public class Hesil extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel bg;
     private javax.swing.JLabel exitbtn;
     private javax.swing.JPanel header;
     private javax.swing.JLabel jLabel1;
@@ -330,6 +336,7 @@ public class Hesil extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JPanel loginbtn;
     private javax.swing.JLabel loginbtnTX;
+    private javax.swing.JPanel principalventana;
     private javax.swing.JPanel salirbtn;
     private javax.swing.JPasswordField txtContraseña;
     private javax.swing.JTextField txtUsuario;

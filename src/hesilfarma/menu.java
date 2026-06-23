@@ -21,7 +21,6 @@ public class menu extends javax.swing.JFrame {
         initComponents();
         contenido .setLayout(new BorderLayout());
         principal p = new principal();
-
         contenido.removeAll();
         contenido.add(p, BorderLayout.CENTER);
         contenido.revalidate();
@@ -373,7 +372,7 @@ public class menu extends javax.swing.JFrame {
     }//GEN-LAST:event_exitTextMouseEntered
 
     private void exitTextMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exitTextMouseExited
-        exitbtn.setBackground(new Color(153,153,255));
+        exitbtn.setBackground(new Color(45,78,155));
     }//GEN-LAST:event_exitTextMouseExited
 
     private void exitTextMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exitTextMouseClicked
@@ -474,7 +473,7 @@ public class menu extends javax.swing.JFrame {
     }//GEN-LAST:event_inventariotxtMouseClicked
 
     private void reportestxtMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reportestxtMouseClicked
-        javax.swing.JOptionPane.showMessageDialog(null, "Reportes cargado");
+
         reportes repor = new reportes();
         contenido.removeAll();
         contenido.add(repor,BorderLayout.CENTER);

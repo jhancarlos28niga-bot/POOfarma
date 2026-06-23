@@ -58,11 +58,4 @@ public class Ventas {
         this.Total = Total;
     }
     
-    
-    
-    
-    
-
-    
-    
 }

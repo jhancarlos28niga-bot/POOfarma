@@ -57,41 +57,39 @@ public class inventario extends javax.swing.JPanel {
         }
          
     }
-    private void ComboBox()
+    public void listarHistorial(int idMedicamento)
     {
-        cmbMotivo.removeAllItems();
-        cmbMotivo.addItem("Reposición");
-        cmbMotivo.addItem("Compra");
-        cmbMotivo.addItem("Donación");
-        cmbMotivo.addItem("Ajuste");
-    }
-    /*private void listarMovimientos()
-    {
-        DefaultTableModel modelo =
-                (DefaultTableModel) tablaMovimientos.getModel();
-
-        modelo.setRowCount(0);
-
         MovimientoInventariosDAO dao =
                 new MovimientoInventariosDAO();
 
-        List<MovimientoInventario> lista = dao.listar();
+        List<MovimientoInventario> lista =
+                dao.listarPorMedicamento(idMedicamento);
+
+        DefaultTableModel modelo =
+                (DefaultTableModel) tblHistorial.getModel();
+
+        modelo.setRowCount(0);
 
         for(MovimientoInventario mov : lista)
         {
-            Object[] fila =
-            {
-                mov.getIdMovimiento(),
-                mov.getIdMedicamento(),
-                mov.getTipoMovimiento(),
+            modelo.addRow(new Object[]{
                 mov.getFechaMovimiento(),
+                mov.getTipoMovimiento(),
+                mov.getCantidad(),
                 mov.getObservacion()
-            };
-
-            modelo.addRow(fila);
+            });
         }
     }
-*/
+    private void ComboBox()
+    {
+        cmbMotivo.removeAllItems();
+        cmbMotivo.addItem("Reposición de Stock");
+        cmbMotivo.addItem("Compra a Proveedor");
+        cmbMotivo.addItem("Donación");
+        cmbMotivo.addItem("Devolución");
+        cmbMotivo.addItem("Ajuste de Inventario");
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -111,7 +109,8 @@ public class inventario extends javax.swing.JPanel {
         jLabel7 = new javax.swing.JLabel();
         cmbMotivo = new javax.swing.JComboBox<>();
         btnRegistrarEntrada = new javax.swing.JButton();
-        btnRegistrarSalida = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tblHistorial = new javax.swing.JTable();
 
         setPreferredSize(new java.awt.Dimension(526, 0));
 
@@ -120,7 +119,7 @@ public class inventario extends javax.swing.JPanel {
         jLabel2.setBackground(new java.awt.Color(255, 0, 0));
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 0, 0));
-        jLabel2.setText("inventarios");
+        jLabel2.setText("GESTIÓN INVENTARIO");
 
         jLabel3.setText("Buscar Medicamentos:");
 
@@ -163,8 +162,18 @@ public class inventario extends javax.swing.JPanel {
         btnRegistrarEntrada.setText("REGISTRAR ENTRADA");
         btnRegistrarEntrada.addActionListener(this::btnRegistrarEntradaActionPerformed);
 
-        btnRegistrarSalida.setText("REGISTRAR SALIDA");
-        btnRegistrarSalida.addActionListener(this::btnRegistrarSalidaActionPerformed);
+        tblHistorial.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Fecha", "Tipo", "Cantidad", "Observación"
+            }
+        ));
+        jScrollPane2.setViewportView(tblHistorial);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -173,29 +182,25 @@ public class inventario extends javax.swing.JPanel {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(179, 179, 179)
-                        .addComponent(jLabel2))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(16, 16, 16)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3)
-                            .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 421, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtMedicamento, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel7)
-                                    .addComponent(cmbMotivo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel6)
-                                    .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(btnRegistrarEntrada)
-                                    .addComponent(jLabel4))
-                                .addGap(31, 31, 31)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel5)
-                                    .addComponent(btnRegistrarSalida)
-                                    .addComponent(txtStock, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE))))))
-                .addContainerGap(211, Short.MAX_VALUE))
+                            .addComponent(txtMedicamento, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel7)
+                            .addComponent(cmbMotivo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel6)
+                            .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnRegistrarEntrada)
+                            .addComponent(jLabel4)
+                            .addComponent(txtStock, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel5)
+                            .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 379, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(83, 83, 83)
+                        .addComponent(jLabel2)))
+                .addContainerGap(63, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -209,13 +214,13 @@ public class inventario extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel5))
+                .addComponent(jLabel4)
                 .addGap(5, 5, 5)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtMedicamento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtStock, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(txtMedicamento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtStock, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -225,10 +230,10 @@ public class inventario extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(cmbMotivo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnRegistrarEntrada)
-                    .addComponent(btnRegistrarSalida))
-                .addContainerGap(234, Short.MAX_VALUE))
+                .addComponent(btnRegistrarEntrada)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -249,6 +254,8 @@ public class inventario extends javax.swing.JPanel {
         idMedicamentoSeleccionado =Integer.parseInt(jtablaMedicamentos.getValueAt(fila,0).toString());
         txtMedicamento.setText(jtablaMedicamentos.getValueAt(fila,1).toString());
         txtStock.setText(jtablaMedicamentos.getValueAt(fila,2).toString());
+        idMedicamentoSeleccionado = Integer.parseInt(jtablaMedicamentos.getValueAt(fila,0).toString());
+        listarHistorial(idMedicamentoSeleccionado);
         // TODO add your handling code here:
     }//GEN-LAST:event_jtablaMedicamentosMouseClicked
 
@@ -282,52 +289,16 @@ public class inventario extends javax.swing.JPanel {
              JOptionPane.showMessageDialog( null,"Entrada registrada");
              ListarMedicamentos();
              txtCantidad.setText("");
+             if(idMedicamentoSeleccionado > 0)
+            {
+                listarHistorial(idMedicamentoSeleccionado);
+            }
              
          }
     
        
         // TODO add your handling code here:
     }//GEN-LAST:event_btnRegistrarEntradaActionPerformed
-
-    private void btnRegistrarSalidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarSalidaActionPerformed
-        
-        int cantidad = Integer.parseInt(txtCantidad.getText());
-        int stockActual = Integer.parseInt(txtStock.getText());
-
-        if(cantidad > stockActual)
-        {
-            JOptionPane.showMessageDialog(null,
-                    "No hay suficiente stock");
-            return;
-        }
-
-        String motivo = cmbMotivo.getSelectedItem().toString();
-
-        MedicamentoDAO dao = new MedicamentoDAO();
-
-        if(dao.descontarStock(idMedicamentoSeleccionado,cantidad))
-        {
-            MovimientoInventario mov = new MovimientoInventario();
-
-            mov.setIdMedicamento(idMedicamentoSeleccionado);
-            mov.setTipoMovimiento("Salida");
-            mov.setCantidad(cantidad);
-            mov.setFechaMovimiento(LocalDate.now().toString());
-            mov.setObservacion(motivo);
-
-            MovimientoInventariosDAO daoMov =
-                    new MovimientoInventariosDAO();
-
-            daoMov.guardar(mov);
-
-            JOptionPane.showMessageDialog(null,
-                    "Salida registrada");
-
-            ListarMedicamentos();
-            txtCantidad.setText("");
-        }    
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnRegistrarSalidaActionPerformed
 
     private void txtBuscarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscarKeyReleased
         String nombre =txtBuscar.getText().trim();
@@ -352,7 +323,6 @@ public class inventario extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnRegistrarEntrada;
-    private javax.swing.JButton btnRegistrarSalida;
     private javax.swing.JComboBox<String> cmbMotivo;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -362,7 +332,9 @@ public class inventario extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jtablaMedicamentos;
+    private javax.swing.JTable tblHistorial;
     private javax.swing.JTextField txtBuscar;
     private javax.swing.JTextField txtCantidad;
     private javax.swing.JTextField txtMedicamento;

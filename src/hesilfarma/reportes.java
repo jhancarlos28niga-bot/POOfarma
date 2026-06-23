@@ -4,6 +4,12 @@
  */
 package hesilfarma;
 
+import DAO.reportesDAO;
+import Modelo.reporte;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author jhanc
@@ -14,9 +20,22 @@ public class reportes extends javax.swing.JPanel {
      * Creates new form reportes
      */
     public reportes() {
-        System.out.println("Entró al constructor reportes");
+        
         initComponents();
-        System.out.println("Salió del constructor reportes");
+        cargarEstadisticas();
+       
+    }
+        private void cargarEstadisticas()
+    {
+        reportesDAO dao =new reportesDAO();
+
+        lblTotalVentas.setText("S/. "+ String.format("%.2f",dao.totalVentas()));
+
+        lblProductosVendidos.setText(String.valueOf(dao.productosVendidos()));
+
+        lblNumeroVentas.setText(String.valueOf(dao.numeroVentas()));
+
+        txtmedicamento.setText(dao.medicamentoMasVendido());
     }
 
     /**
@@ -29,18 +48,89 @@ public class reportes extends javax.swing.JPanel {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tablaReportes = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        jButton2 = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        lblTotalVentas = new javax.swing.JLabel();
+        lblProductosVendidos = new javax.swing.JLabel();
+        lblNumeroVentas = new javax.swing.JLabel();
+        fechaInicio = new com.toedter.calendar.JDateChooser();
+        fechaFin = new com.toedter.calendar.JDateChooser();
+        jLabel9 = new javax.swing.JLabel();
+        txtskere = new javax.swing.JLabel();
+        txtmedicamento = new javax.swing.JLabel();
+        btnMostrar = new javax.swing.JButton();
+        btnBuscar = new javax.swing.JButton();
+
+        setBorder(new javax.swing.border.MatteBorder(null));
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 3, 24)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 0, 0));
-        jLabel1.setText("REPORTES");
+        tablaReportes.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
+            },
+            new String [] {
+                "Fecha", "Cliente", "Medicamento", "Cantidad", "Precio", "Subtotal"
+            }
+        ));
+        jScrollPane1.setViewportView(tablaReportes);
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 3, 24)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(255, 0, 0));
-        jLabel2.setText("REPORTES");
+        jLabel1.setText("Fecha Inicio");
+
+        jLabel2.setText("Fechan fin");
+
+        jButton2.setText("EXPORTAR PDF");
+
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel3.setText("Total Ventas:");
+
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel4.setText("Productos Vendidos:");
+
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel5.setText("N* ventas:");
+
+        lblTotalVentas.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        lblTotalVentas.setForeground(new java.awt.Color(0, 0, 0));
+        lblTotalVentas.setText("0.0");
+
+        lblProductosVendidos.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        lblProductosVendidos.setForeground(new java.awt.Color(0, 0, 0));
+        lblProductosVendidos.setText("0.0");
+
+        lblNumeroVentas.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        lblNumeroVentas.setForeground(new java.awt.Color(0, 0, 0));
+        lblNumeroVentas.setText("0.0");
+
+        jLabel9.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        jLabel9.setForeground(new java.awt.Color(255, 51, 51));
+        jLabel9.setText("REPORTES");
+
+        txtskere.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        txtskere.setForeground(new java.awt.Color(0, 0, 0));
+        txtskere.setText("Medicamento más vendido:");
+
+        txtmedicamento.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        txtmedicamento.setForeground(new java.awt.Color(0, 0, 0));
+        txtmedicamento.setText("-");
+
+        btnMostrar.setText("MOSTRAR ");
+        btnMostrar.addActionListener(this::btnMostrarActionPerformed);
+
+        btnBuscar.setText("BUSCAR");
+        btnBuscar.addActionListener(this::btnBuscarActionPerformed);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -49,20 +139,83 @@ public class reportes extends javax.swing.JPanel {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(122, 122, 122)
-                        .addComponent(jLabel1))
+                        .addContainerGap()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 481, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(btnBuscar)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnMostrar)
+                                .addGap(13, 13, 13)
+                                .addComponent(jButton2))
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                    .addComponent(jLabel2)
+                                    .addGap(26, 26, 26)
+                                    .addComponent(fechaFin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                    .addComponent(jLabel1)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(fechaInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(133, 133, 133)
-                        .addComponent(jLabel2)))
-                .addContainerGap(217, Short.MAX_VALUE))
+                        .addGap(172, 172, 172)
+                        .addComponent(jLabel9))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel5)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lblNumeroVentas))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lblTotalVentas))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel4)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lblProductosVendidos))
+                            .addComponent(txtmedicamento)
+                            .addComponent(txtskere))))
+                .addContainerGap(56, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 380, Short.MAX_VALUE)
-                .addComponent(jLabel2)
-                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(14, 14, 14)
+                .addComponent(jLabel9)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(fechaInicio, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(24, 24, 24)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel2)
+                    .addComponent(fechaFin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton2)
+                    .addComponent(btnMostrar)
+                    .addComponent(btnBuscar))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 397, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(lblTotalVentas))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(lblProductosVendidos))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(lblNumeroVentas))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(txtskere)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtmedicamento)
+                .addGap(16, 16, 16))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -77,10 +230,94 @@ public class reportes extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnMostrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMostrarActionPerformed
+        
+      DefaultTableModel modelo =(DefaultTableModel)tablaReportes.getModel();
+      modelo.setRowCount(0);
+      reportesDAO dao = new reportesDAO();
+
+      List<reporte> lista = dao.listarVentas();
+        for (reporte rep : lista)
+        {
+            modelo.addRow(new Object[]
+            {
+                rep.getFecha(),
+                rep.getCliente(),
+                rep.getMedicamento(),
+                rep.getCantidad(),
+                rep.getPrecio(),
+                rep.getSubtotal()
+            });
+        }
+        cargarEstadisticas();
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnMostrarActionPerformed
+
+    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+        if(fechaInicio.getDate() == null || fechaFin.getDate() == null)
+        {
+            JOptionPane.showMessageDialog(null,"Seleccione ambas fechas");
+            return;
+        }
+
+        java.sql.Date inicio =new java.sql.Date(fechaInicio.getDate().getTime());
+
+        java.sql.Date fin =new java.sql.Date(fechaFin.getDate().getTime());
+
+        reportesDAO dao =new reportesDAO();
+
+        List<reporte> lista =dao.buscarPorFechas(inicio,fin);
+
+        DefaultTableModel modelo =(DefaultTableModel)tablaReportes.getModel();
+
+        modelo.setRowCount(0);
+        if(lista.isEmpty())
+        {
+            JOptionPane.showMessageDialog(null,"No existen ventas en ese rango de fechas");
+        }
+
+        for(reporte rep : lista)
+        {
+            modelo.addRow(new Object[]
+            {
+                rep.getFecha(),
+                rep.getCliente(),
+                rep.getMedicamento(),
+                rep.getCantidad(),
+                rep.getPrecio(),
+                rep.getSubtotal()
+            });
+        }
+        lblTotalVentas.setText("S/. "+ String.format("%.2f",dao.totalVentasPorFecha(inicio,fin)));
+
+        lblProductosVendidos.setText(String.valueOf(dao.productosVendidosPorFecha(inicio,fin)));
+
+        lblNumeroVentas.setText(String.valueOf(dao.numeroVentasPorFecha(inicio,fin)));
+
+        txtmedicamento.setText(dao.medicamentoMasVendidoPorFecha(inicio,fin));
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnBuscarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBuscar;
+    private javax.swing.JButton btnMostrar;
+    private com.toedter.calendar.JDateChooser fechaFin;
+    private com.toedter.calendar.JDateChooser fechaInicio;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblNumeroVentas;
+    private javax.swing.JLabel lblProductosVendidos;
+    private javax.swing.JLabel lblTotalVentas;
+    private javax.swing.JTable tablaReportes;
+    private javax.swing.JLabel txtmedicamento;
+    private javax.swing.JLabel txtskere;
     // End of variables declaration//GEN-END:variables
 }

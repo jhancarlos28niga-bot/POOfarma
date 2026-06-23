@@ -7,10 +7,12 @@ package hesilfarma;
 import DAO.ClientesDAO;
 import DAO.DetalleVentasDAO;
 import DAO.MedicamentoDAO;
+import DAO.MovimientoInventariosDAO;
 import DAO.VentasDAO;
 import Modelo.Cliente;
 import Modelo.DetalleVenta;
 import Modelo.Medicamento;
+import Modelo.MovimientoInventario;
 import Modelo.Ventas;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -452,12 +454,25 @@ public class ventas extends javax.swing.JPanel {
                  det.setPrecioUnitario( Double.parseDouble(modelo.getValueAt(i,3).toString()));
                  det.setSubtotal(Double.parseDouble( modelo.getValueAt(i,4).toString()));
                  daoDetalle.guardar(det);
+                 MedicamentoDAO daoMedicamento = new MedicamentoDAO();
+                 daoMedicamento.descontarStock(det.getIdMedicamento(),det.getCantidad());
+                 MovimientoInventario mov = new MovimientoInventario();
+                    mov.setIdMedicamento(det.getIdMedicamento());
+                    mov.setTipoMovimiento("Salida");
+                    mov.setCantidad(det.getCantidad());
+                    mov.setFechaMovimiento(LocalDate.now().toString());
+                    mov.setObservacion("Venta");
+
+                MovimientoInventariosDAO daoMov = new MovimientoInventariosDAO();
+                daoMov.guardar(mov);
             }
              JOptionPane.showMessageDialog(null,"Venta registrada correctamente");
              modelo.setRowCount(0);
              totalGeneral = 0;
              lblTotal.setText("S/. 0.00");
              txtCantidad.setText("");
+             ListarMedicamentos();
+            
         }catch(Exception e)
         {
             JOptionPane.showMessageDialog(null,"Error: " + e.getMessage());
