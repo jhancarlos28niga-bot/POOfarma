@@ -111,9 +111,7 @@ public class MovimientoInventariosDAO {
         }
         catch(SQLException e)
         {
-            JOptionPane.showMessageDialog(null,
-                    "Error al listar movimientos: "
-                    + e.getMessage());
+            JOptionPane.showMessageDialog(null,"Error al listar movimientos: "+ e.getMessage());
         }
 
         return lista;

@@ -46,108 +46,96 @@ public class MedicamentoDAO {
             return false;
         }
     }
-    public List<Medicamento> listar() {
+    public List<Medicamento> listar() 
+    {
+        List<Medicamento> lista = new ArrayList<>();
 
-    List<Medicamento> lista = new ArrayList<>();
+        String sql = "SELECT * FROM Medicamentos";
 
-    String sql = "SELECT * FROM Medicamentos";
+        try {
 
-    try {
+            Connection con = cn.conectar();
 
-        Connection con = cn.conectar();
+            PreparedStatement ps = con.prepareStatement(sql);
 
-        PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
 
-        ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
 
-        while (rs.next()) {
+                Medicamento med = new Medicamento();
 
-            Medicamento med = new Medicamento();
+                med.setIdMedicamento(rs.getInt("ID_Medicamento"));
 
-            med.setIdMedicamento(
-                    rs.getInt("ID_Medicamento"));
+                med.setNombre(rs.getString("Nombre"));
 
-            med.setNombre(
-                    rs.getString("Nombre"));
+                med.setDescripcion(rs.getString("Descripcion"));
 
-            med.setDescripcion(
-                    rs.getString("Descripcion"));
+                med.setCategoria(rs.getString("Categoria"));
 
-            med.setCategoria(
-                    rs.getString("Categoria"));
+                med.setStock(rs.getInt("Stock"));
 
-            med.setStock(
-                    rs.getInt("Stock"));
+                med.setPrecio(rs.getDouble("Precio"));
 
-            med.setPrecio(
-                    rs.getDouble("Precio"));
+                med.setFechaVencimiento( rs.getString("Fecha_Vencimiento"));
 
-            med.setFechaVencimiento(
-                    rs.getString("Fecha_Vencimiento"));
+                med.setLaboratorio(rs.getString("Laboratorio"));
 
-            med.setLaboratorio(
-                    rs.getString("Laboratorio"));
+                lista.add(med);
+            }
 
-            lista.add(med);
+        } catch (SQLException e) {
+
+            JOptionPane.showMessageDialog(null,"Error al listar: " + e.getMessage());
         }
 
-    } catch (SQLException e) {
+        return lista;
+        }
+        public List<Medicamento> buscar(String nombre) {
 
-        JOptionPane.showMessageDialog(null,
-                "Error al listar: " + e.getMessage());
-    }
+        List<Medicamento> lista = new ArrayList<>();
 
-    return lista;
-    }
-    public List<Medicamento> buscar(String nombre) {
+        String sql = "SELECT * FROM Medicamentos WHERE Nombre LIKE ?";
 
-    List<Medicamento> lista = new ArrayList<>();
+        try {
 
-    String sql = "SELECT * FROM Medicamentos WHERE Nombre LIKE ?";
+            Connection con = cn.conectar();
 
-    try {
+            PreparedStatement ps = con.prepareStatement(sql);
 
-        Connection con = cn.conectar();
+            ps.setString(1, "%" + nombre + "%");
 
-        PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
 
-        ps.setString(1, "%" + nombre + "%");
+            while(rs.next()) {
 
-        ResultSet rs = ps.executeQuery();
+                Medicamento med = new Medicamento();
 
-        while(rs.next()) {
+                med.setIdMedicamento(rs.getInt("ID_Medicamento"));
 
-            Medicamento med = new Medicamento();
+                med.setNombre(rs.getString("Nombre"));
 
-            med.setIdMedicamento(rs.getInt("ID_Medicamento"));
+                med.setDescripcion(rs.getString("Descripcion"));
 
-            med.setNombre(rs.getString("Nombre"));
+                med.setCategoria(rs.getString("Categoria"));
 
-            med.setDescripcion(rs.getString("Descripcion"));
+                med.setStock(rs.getInt("Stock"));
 
-            med.setCategoria(rs.getString("Categoria"));
+                med.setPrecio(rs.getDouble("Precio"));
 
-            med.setStock(rs.getInt("Stock"));
+                med.setFechaVencimiento(rs.getString("Fecha_Vencimiento"));
 
-            med.setPrecio(rs.getDouble("Precio"));
+                med.setLaboratorio(rs.getString("Laboratorio"));
 
-            med.setFechaVencimiento(
-                    rs.getString("Fecha_Vencimiento"));
+                lista.add(med);
+            }
 
-            med.setLaboratorio(
-                    rs.getString("Laboratorio"));
+        } 
+        catch(SQLException e) {
 
-            lista.add(med);
+            JOptionPane.showMessageDialog(null,"Error al buscar: " + e.getMessage());
         }
 
-    } 
-    catch(SQLException e) {
-
-        JOptionPane.showMessageDialog(null,
-                "Error al buscar: " + e.getMessage());
-    }
-
-    return lista;
+        return lista;
     }
     public boolean actualizar(Medicamento med) 
     {
@@ -255,6 +243,54 @@ public class MedicamentoDAO {
             JOptionPane.showMessageDialog(null, "Error al descontar stock: "+ e.getMessage());
             return false;
         }
+    }
+    public List<Medicamento> listarDisponibles()
+    {
+        List<Medicamento> lista = new ArrayList<>();
+
+        String sql =
+                "SELECT * "
+              + "FROM Medicamentos "
+              + "WHERE Stock > 0";
+
+        try
+        {
+            Connection con = cn.conectar();
+
+            PreparedStatement ps =con.prepareStatement(sql);
+
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next())
+            {
+                Medicamento med = new Medicamento();
+
+                med.setIdMedicamento(rs.getInt("ID_Medicamento"));
+
+                med.setNombre(rs.getString("Nombre"));
+
+                med.setDescripcion(rs.getString("Descripcion"));
+
+                med.setCategoria(rs.getString("Categoria"));
+
+                med.setStock(rs.getInt("Stock"));
+
+                med.setPrecio(rs.getDouble("Precio"));
+
+                med.setFechaVencimiento(rs.getString("Fecha_Vencimiento"));
+
+                med.setLaboratorio(rs.getString("Laboratorio"));
+
+                lista.add(med);
+            }
+
+        }
+        catch(SQLException e)
+        {
+            JOptionPane.showMessageDialog(null,"Error al listar: "+ e.getMessage());
+        }
+
+        return lista;
     }
 }
 

@@ -9,6 +9,15 @@ import Modelo.reporte;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+import java.awt.Desktop;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.time.LocalDate;
+import javax.swing.JFileChooser;
 
 /**
  *
@@ -25,7 +34,7 @@ public class reportes extends javax.swing.JPanel {
         cargarEstadisticas();
        
     }
-        private void cargarEstadisticas()
+    private void cargarEstadisticas()
     {
         reportesDAO dao =new reportesDAO();
 
@@ -52,7 +61,7 @@ public class reportes extends javax.swing.JPanel {
         tablaReportes = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
+        btnExportarPdf = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
@@ -88,7 +97,8 @@ public class reportes extends javax.swing.JPanel {
 
         jLabel2.setText("Fechan fin");
 
-        jButton2.setText("EXPORTAR PDF");
+        btnExportarPdf.setText("EXPORTAR PDF");
+        btnExportarPdf.addActionListener(this::btnExportarPdfActionPerformed);
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(0, 0, 0));
@@ -147,7 +157,7 @@ public class reportes extends javax.swing.JPanel {
                                 .addGap(18, 18, 18)
                                 .addComponent(btnMostrar)
                                 .addGap(13, 13, 13)
-                                .addComponent(jButton2))
+                                .addComponent(btnExportarPdf))
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                 .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                                     .addComponent(jLabel2)
@@ -194,7 +204,7 @@ public class reportes extends javax.swing.JPanel {
                     .addComponent(fechaFin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2)
+                    .addComponent(btnExportarPdf)
                     .addComponent(btnMostrar)
                     .addComponent(btnBuscar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -231,80 +241,164 @@ public class reportes extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnMostrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMostrarActionPerformed
-        
-      DefaultTableModel modelo =(DefaultTableModel)tablaReportes.getModel();
-      modelo.setRowCount(0);
-      reportesDAO dao = new reportesDAO();
+      try
+      {
+        DefaultTableModel modelo =(DefaultTableModel)tablaReportes.getModel();
+        modelo.setRowCount(0);
+        reportesDAO dao = new reportesDAO();
 
-      List<reporte> lista = dao.listarVentas();
-        for (reporte rep : lista)
-        {
-            modelo.addRow(new Object[]
-            {
-                rep.getFecha(),
-                rep.getCliente(),
-                rep.getMedicamento(),
-                rep.getCantidad(),
-                rep.getPrecio(),
-                rep.getSubtotal()
-            });
-        }
-        cargarEstadisticas();
+        List<reporte> lista = dao.listarVentas();
+          for (reporte rep : lista)
+          {
+              modelo.addRow(new Object[]
+              {
+                  rep.getFecha(),
+                  rep.getCliente(),
+                  rep.getMedicamento(),
+                  rep.getCantidad(),
+                  rep.getPrecio(),
+                  rep.getSubtotal()
+              });
+          }
+          cargarEstadisticas();
+          fechaInicio.setDate(null);
+          fechaFin.setDate(null);
+      }catch(Exception e)
+      {
+          JOptionPane.showMessageDialog(null,"Error al mostrar reportes: "+ e.getMessage());
+      }
         // TODO add your handling code here:
     }//GEN-LAST:event_btnMostrarActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-        if(fechaInicio.getDate() == null || fechaFin.getDate() == null)
-        {
-            JOptionPane.showMessageDialog(null,"Seleccione ambas fechas");
-            return;
-        }
-
-        java.sql.Date inicio =new java.sql.Date(fechaInicio.getDate().getTime());
-
-        java.sql.Date fin =new java.sql.Date(fechaFin.getDate().getTime());
-
-        reportesDAO dao =new reportesDAO();
-
-        List<reporte> lista =dao.buscarPorFechas(inicio,fin);
-
-        DefaultTableModel modelo =(DefaultTableModel)tablaReportes.getModel();
-
-        modelo.setRowCount(0);
-        if(lista.isEmpty())
-        {
-            JOptionPane.showMessageDialog(null,"No existen ventas en ese rango de fechas");
-        }
-
-        for(reporte rep : lista)
-        {
-            modelo.addRow(new Object[]
+       
+       try
+       {
+            if(fechaInicio.getDate() == null || fechaFin.getDate() == null)
             {
-                rep.getFecha(),
-                rep.getCliente(),
-                rep.getMedicamento(),
-                rep.getCantidad(),
-                rep.getPrecio(),
-                rep.getSubtotal()
-            });
-        }
-        lblTotalVentas.setText("S/. "+ String.format("%.2f",dao.totalVentasPorFecha(inicio,fin)));
+                JOptionPane.showMessageDialog(null,"Seleccione ambas fechas");
+                return;
+            }
+            if(fechaInicio.getDate().after(fechaFin.getDate()))
+            {
+                JOptionPane.showMessageDialog(null,"La fecha inicial no puede ser mayor que la fecha final");
+                return;
+            }
 
-        lblProductosVendidos.setText(String.valueOf(dao.productosVendidosPorFecha(inicio,fin)));
+            java.sql.Date inicio =new java.sql.Date(fechaInicio.getDate().getTime());
 
-        lblNumeroVentas.setText(String.valueOf(dao.numeroVentasPorFecha(inicio,fin)));
+            java.sql.Date fin =new java.sql.Date(fechaFin.getDate().getTime());
 
-        txtmedicamento.setText(dao.medicamentoMasVendidoPorFecha(inicio,fin));
+            reportesDAO dao =new reportesDAO();
+
+            List<reporte> lista =dao.buscarPorFechas(inicio,fin);
+
+            DefaultTableModel modelo =(DefaultTableModel)tablaReportes.getModel();
+
+            modelo.setRowCount(0);
+            if(lista.isEmpty())
+            {
+                JOptionPane.showMessageDialog(null,"No existen ventas en ese rango de fechas");
+            }
+
+            for(reporte rep : lista)
+            {
+                modelo.addRow(new Object[]
+                {
+                    rep.getFecha(),
+                    rep.getCliente(),
+                    rep.getMedicamento(),
+                    rep.getCantidad(),
+                    rep.getPrecio(),
+                    rep.getSubtotal()
+                });
+            }
+            lblTotalVentas.setText("S/. "+ String.format("%.2f",dao.totalVentasPorFecha(inicio,fin)));
+
+            lblProductosVendidos.setText(String.valueOf(dao.productosVendidosPorFecha(inicio,fin)));
+
+            lblNumeroVentas.setText(String.valueOf(dao.numeroVentasPorFecha(inicio,fin)));
+
+            txtmedicamento.setText(dao.medicamentoMasVendidoPorFecha(inicio,fin));
+       }catch(Exception e)
+       {
+           JOptionPane.showMessageDialog(null,"Error al generar reporte: "+ e.getMessage());
+       }
+        
         // TODO add your handling code here:
     }//GEN-LAST:event_btnBuscarActionPerformed
+
+    private void btnExportarPdfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportarPdfActionPerformed
+        try
+        {
+            JFileChooser chooser = new JFileChooser();
+
+            chooser.setSelectedFile(new File("ReporteVentas.pdf"));
+
+            int opcion = chooser.showSaveDialog(this);
+
+            if(opcion != JFileChooser.APPROVE_OPTION)
+            {
+                return;
+            }
+
+            Document documento = new Document();
+
+            PdfWriter.getInstance(documento,new FileOutputStream(chooser.getSelectedFile()));
+
+            documento.open();
+
+            documento.add(new Paragraph("REPORTE DE VENTAS"));
+            documento.add(new Paragraph(" "));
+            documento.add(new Paragraph("Fecha: " + LocalDate.now()));
+            documento.add(new Paragraph(" "));
+
+            PdfPTable tabla = new PdfPTable(6);
+
+            tabla.addCell("Fecha");
+            tabla.addCell("Cliente");
+            tabla.addCell("Medicamento");
+            tabla.addCell("Cantidad");
+            tabla.addCell("Precio");
+            tabla.addCell("Subtotal");
+
+            for(int i = 0; i < tablaReportes.getRowCount(); i++)
+            {
+                tabla.addCell(tablaReportes.getValueAt(i,0).toString());
+                tabla.addCell(tablaReportes.getValueAt(i,1).toString());
+                tabla.addCell(tablaReportes.getValueAt(i,2).toString());
+                tabla.addCell(tablaReportes.getValueAt(i,3).toString());
+                tabla.addCell(tablaReportes.getValueAt(i,4).toString());
+                tabla.addCell(tablaReportes.getValueAt(i,5).toString());
+            }
+
+            documento.add(tabla);
+
+            documento.add(new Paragraph(" "));
+            documento.add(new Paragraph("Total Ventas: " + lblTotalVentas.getText()));
+            documento.add(new Paragraph("Productos Vendidos: " + lblProductosVendidos.getText()));
+            documento.add(new Paragraph("Numero de Ventas: " + lblNumeroVentas.getText()));
+            documento.add(new Paragraph("Medicamento mas vendido: " + txtmedicamento.getText()));
+
+            documento.close();
+
+            JOptionPane.showMessageDialog(null,"PDF generado correctamente");
+            Desktop.getDesktop().open(chooser.getSelectedFile());
+        }
+        catch(Exception e)
+        {
+            JOptionPane.showMessageDialog(null,"Error: " + e.getMessage());
+        }
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnExportarPdfActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscar;
+    private javax.swing.JButton btnExportarPdf;
     private javax.swing.JButton btnMostrar;
     private com.toedter.calendar.JDateChooser fechaFin;
     private com.toedter.calendar.JDateChooser fechaInicio;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

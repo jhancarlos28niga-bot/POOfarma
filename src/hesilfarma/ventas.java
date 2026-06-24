@@ -53,7 +53,7 @@ public class ventas extends javax.swing.JPanel {
 
         MedicamentoDAO dao = new MedicamentoDAO();
 
-        List<Medicamento> lista = dao.listar();
+        List<Medicamento> lista = dao.listarDisponibles();
 
         for (Medicamento med : lista) 
         {
@@ -142,6 +142,12 @@ public class ventas extends javax.swing.JPanel {
 
         jLabel5.setText("Cantidad:");
 
+        txtCantidad.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtCantidadKeyTyped(evt);
+            }
+        });
+
         btnAgregarProducto.setText("AGREGAR PRODUCTO");
         btnAgregarProducto.addActionListener(this::btnAgregarProductoActionPerformed);
 
@@ -174,6 +180,12 @@ public class ventas extends javax.swing.JPanel {
         btnRegistrarVenta.addActionListener(this::btnRegistrarVentaActionPerformed);
 
         jLabel1.setText("DNI Cliente:");
+
+        txtDNIbuscar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtDNIbuscarKeyTyped(evt);
+            }
+        });
 
         jLabel9.setText("Cliente:");
 
@@ -296,25 +308,32 @@ public class ventas extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnBuscarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarClienteActionPerformed
-        String dni = txtDNIbuscar.getText().trim();
-        if(!dni.matches("\\d{8}"))
+        try
         {
-            JOptionPane.showMessageDialog(null,"Ingrese un DNI válido");
-            return;
+           String dni = txtDNIbuscar.getText().trim();
+            if(!dni.matches("\\d{8}"))
+            {
+                JOptionPane.showMessageDialog(null,"Ingrese un DNI válido");
+                return;
+            }
+            ClientesDAO dao = new ClientesDAO();
+            Cliente cli = dao.buscarCliente(dni);
+            if(cli != null)
+            {
+                idClienteSeleccionado =cli.getID_Cliente();
+                txtNombreCliente.setText(cli.getNombre());
+
+            }else
+            {
+                JOptionPane.showMessageDialog(null,"Cliente no encontrado");
+                idClienteSeleccionado = 0;
+                txtNombreCliente.setText("");
+            } 
+        }catch(Exception e)
+        {
+             JOptionPane.showMessageDialog(null,"Error al buscar cliente: "+ e.getMessage());
         }
-        ClientesDAO dao = new ClientesDAO();
-        Cliente cli = dao.buscarCliente(dni);
-        if(cli != null)
-        {
-            idClienteSeleccionado =cli.getID_Cliente();
-            txtNombreCliente.setText(cli.getNombre());
-                              
-        }else
-        {
-            JOptionPane.showMessageDialog(null,"Cliente no encontrado");
-            idClienteSeleccionado = 0;
-            txtNombreCliente.setText("");
-        }
+            
         // TODO add your handling code here:
     }//GEN-LAST:event_btnBuscarClienteActionPerformed
 
@@ -357,42 +376,49 @@ public class ventas extends javax.swing.JPanel {
     }//GEN-LAST:event_jtablaMedicamentosMouseClicked
 
     private void btnAgregarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarProductoActionPerformed
-     if(idMedicamentoSeleccionado == 0)
+     try
      {
-        JOptionPane.showMessageDialog( null, "Seleccione un medicamento");
-        return;
-     }
+      if(idMedicamentoSeleccionado == 0)
+      {
+         JOptionPane.showMessageDialog( null, "Seleccione un medicamento");
+         return;
+      }
 
-     if(txtCantidad.getText().trim().isEmpty())
+      if(txtCantidad.getText().trim().isEmpty())
+      {
+         JOptionPane.showMessageDialog(null,"Ingrese la cantidad");
+         return;
+      }
+
+      int cantidad =Integer.parseInt(txtCantidad.getText());
+
+      if(cantidad <= 0)
+      {
+         JOptionPane.showMessageDialog(null,"Cantidad inválida");
+         return;
+      }
+
+      if(cantidad > stockSeleccionado)
+      {
+         JOptionPane.showMessageDialog(null,"Stock insuficiente");
+         return;
+      }
+
+      double subtotal =cantidad * precioSeleccionado;
+
+      DefaultTableModel modelo =(DefaultTableModel)
+      tablaVenta.getModel();
+      modelo.addRow(new Object[]{idMedicamentoSeleccionado,nombreMedicamentoSeleccionado,cantidad, precioSeleccionado,subtotal});
+
+      totalGeneral += subtotal;
+
+      lblTotal.setText( "S/. " + String.format("%.2f", totalGeneral));
+      txtCantidad.setText("");  
+     }catch(Exception e)
      {
-        JOptionPane.showMessageDialog(null,"Ingrese la cantidad");
-        return;
+         JOptionPane.showMessageDialog(null,"Error al Agregar producto: "+ e.getMessage());
      }
-
-    int cantidad =Integer.parseInt(txtCantidad.getText());
-
-     if(cantidad <= 0)
-     {
-        JOptionPane.showMessageDialog(null,"Cantidad inválida");
-        return;
-     }
-
-     if(cantidad > stockSeleccionado)
-     {
-        JOptionPane.showMessageDialog(null,"Stock insuficiente");
-        return;
-     }
-
-     double subtotal =cantidad * precioSeleccionado;
-
-     DefaultTableModel modelo =(DefaultTableModel)
-     tablaVenta.getModel();
-     modelo.addRow(new Object[]{idMedicamentoSeleccionado,nombreMedicamentoSeleccionado,cantidad, precioSeleccionado,subtotal});
-
-     totalGeneral += subtotal;
-
-     lblTotal.setText( "S/. " + String.format("%.2f", totalGeneral));
-     txtCantidad.setText("");
+    
         // TODO add your handling code here:
     }//GEN-LAST:event_btnAgregarProductoActionPerformed
 
@@ -403,7 +429,7 @@ public class ventas extends javax.swing.JPanel {
             JOptionPane.showMessageDialog( null,"Seleccione un producto");
             return;
         }
-        double subtotal =Double.parseDouble(tablaVenta.getValueAt(fila,3).toString());
+        double subtotal =Double.parseDouble(tablaVenta.getValueAt(fila,4).toString());
         totalGeneral -= subtotal;
         DefaultTableModel modelo =(DefaultTableModel)tablaVenta.getModel();
          modelo.removeRow(fila);
@@ -457,11 +483,11 @@ public class ventas extends javax.swing.JPanel {
                  MedicamentoDAO daoMedicamento = new MedicamentoDAO();
                  daoMedicamento.descontarStock(det.getIdMedicamento(),det.getCantidad());
                  MovimientoInventario mov = new MovimientoInventario();
-                    mov.setIdMedicamento(det.getIdMedicamento());
-                    mov.setTipoMovimiento("Salida");
-                    mov.setCantidad(det.getCantidad());
-                    mov.setFechaMovimiento(LocalDate.now().toString());
-                    mov.setObservacion("Venta");
+                 mov.setIdMedicamento(det.getIdMedicamento());
+                 mov.setTipoMovimiento("Salida");
+                 mov.setCantidad(det.getCantidad());
+                 mov.setFechaMovimiento(LocalDate.now().toString());
+                 mov.setObservacion("Venta");
 
                 MovimientoInventariosDAO daoMov = new MovimientoInventariosDAO();
                 daoMov.guardar(mov);
@@ -472,12 +498,38 @@ public class ventas extends javax.swing.JPanel {
              lblTotal.setText("S/. 0.00");
              txtCantidad.setText("");
              ListarMedicamentos();
+             idClienteSeleccionado = 0;
+            txtDNIbuscar.setText("");
+            txtNombreCliente.setText("");
+            idMedicamentoSeleccionado = 0;
             
         }catch(Exception e)
         {
             JOptionPane.showMessageDialog(null,"Error: " + e.getMessage());
         }   // TODO add your handling code here:
     }//GEN-LAST:event_btnRegistrarVentaActionPerformed
+
+    private void txtDNIbuscarKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDNIbuscarKeyTyped
+        char c = evt.getKeyChar();
+        if(!Character.isDigit(c))
+        {
+            evt.consume();
+        }
+
+        if(txtDNIbuscar.getText().length() >= 8)
+        {
+            evt.consume();
+        }
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtDNIbuscarKeyTyped
+
+    private void txtCantidadKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCantidadKeyTyped
+         if(!Character.isDigit(evt.getKeyChar()))
+        {
+            evt.consume();
+        }   
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtCantidadKeyTyped
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

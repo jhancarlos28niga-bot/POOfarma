@@ -148,6 +148,24 @@ public class medicamentos extends javax.swing.JPanel {
 
         jLabel10.setText("Laboratorio:");
 
+        txtStock.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtStockKeyTyped(evt);
+            }
+        });
+
+        txtPrecio.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtPrecioKeyTyped(evt);
+            }
+        });
+
+        txtLaboratorio.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtLaboratorioKeyTyped(evt);
+            }
+        });
+
         btnGuardar.setText("GUARDAR");
         btnGuardar.addActionListener(this::btnGuardarActionPerformed);
 
@@ -297,86 +315,109 @@ public class medicamentos extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-       if(txtNombre.getText().trim().isEmpty())
+       try
        {
-           JOptionPane.showMessageDialog(null,"Ingrese el nombre");
-           return;
-       }
-       if(cbCategoria.getSelectedIndex()==0)
-       {
-            JOptionPane.showMessageDialog(null,"Seleccione una categoría");
-            return;
-       }
-       if(txtStock.getText().trim().isEmpty())
-       {
-           JOptionPane.showMessageDialog(null,"Ingrese el stock");
-           return;
-       }
-       if(txtPrecio.getText().trim().isEmpty())
-       {
-         JOptionPane.showMessageDialog(null,"Ingrese el precio");
-         return;
-       }
-       if(txtFecha.getDate() ==null)
-       {
-           JOptionPane.showMessageDialog(null,"Seleccione una fecha");
-           return;
-       }
-       int stock;
-       double precio;
-      try {
-              
-             stock = Integer.parseInt( txtStock.getText().trim());
-             if(stock < 0)
-             {
-                 JOptionPane.showMessageDialog(null,"El stock no puede ser negativo");
-                 return;
-             }
-
-             precio = Double.parseDouble( txtPrecio.getText().trim());
-
-             if(precio <= 0)
-             {
-                 JOptionPane.showMessageDialog(null,"El precio debe ser mayor a 0");
-                 return;
-             }
-
-         } catch(NumberFormatException e) {
-
-             JOptionPane.showMessageDialog(null,"Stock y Precio deben ser numéricos");
+   
+       
+            if(txtNombre.getText().trim().isEmpty())
+           {
+               JOptionPane.showMessageDialog(null,"Ingrese el nombre");
+               return;
+           }
+           if(txtNombre.getText().trim().length() < 3)
+            {
+                JOptionPane.showMessageDialog(null,"Ingrese un nombre válido");
+                return;
+            }
+           if(cbCategoria.getSelectedIndex()==0)
+           {
+                JOptionPane.showMessageDialog(null,"Seleccione una categoría");
+                return;
+           }
+           if(txtStock.getText().trim().isEmpty())
+           {
+               JOptionPane.showMessageDialog(null,"Ingrese el stock");
+               return;
+           }
+           if(txtPrecio.getText().trim().isEmpty())
+           {
+             JOptionPane.showMessageDialog(null,"Ingrese el precio");
              return;
-         }
+           }
+           if(txtFecha.getDate() ==null)
+           {
+               JOptionPane.showMessageDialog(null,"Seleccione una fecha");
+               return;
+           }
+           if(txtFecha.getDate().before(new java.util.Date()))
+            {
+                JOptionPane.showMessageDialog(null,"La fecha de vencimiento debe ser futura");
+                return;
+            }
+           if(txtLaboratorio.getText().trim().isEmpty())
+            {
+                JOptionPane.showMessageDialog(null,"Ingrese el laboratorio");
+                return;
+            }
+           int stock;
+           double precio;
+          try {
 
-       Medicamento med = new Medicamento();
+                 stock = Integer.parseInt( txtStock.getText().trim());
+                 if(stock < 0)
+                 {
+                     JOptionPane.showMessageDialog(null,"El stock no puede ser negativo");
+                     return;
+                 }
 
-       med.setNombre(txtNombre.getText().trim());
+                 precio = Double.parseDouble( txtPrecio.getText().trim());
 
-       med.setDescripcion(txtDescripcion.getText().trim());
+                 if(precio <= 0)
+                 {
+                     JOptionPane.showMessageDialog(null,"El precio debe ser mayor a 0");
+                     return;
+                 }
 
-       med.setCategoria(cbCategoria.getSelectedItem().toString());
+             } catch(NumberFormatException e) {
 
-       med.setStock(stock);
+                 JOptionPane.showMessageDialog(null,"Stock y Precio deben ser numéricos");
+                 return;
+             }
 
-       med.setPrecio(precio);
+           Medicamento med = new Medicamento();
 
-       med.setLaboratorio(txtLaboratorio.getText().trim());
+           med.setNombre(txtNombre.getText().trim());
 
-        SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+           med.setDescripcion(txtDescripcion.getText().trim());
 
-        med.setFechaVencimiento(formato.format(txtFecha.getDate()));
-        
-        MedicamentoDAO dao = new MedicamentoDAO();
+           med.setCategoria(cbCategoria.getSelectedItem().toString());
 
-        if(dao.guardar(med))
+           med.setStock(stock);
+
+           med.setPrecio(precio);
+
+           med.setLaboratorio(txtLaboratorio.getText().trim());
+
+            SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+
+            med.setFechaVencimiento(formato.format(txtFecha.getDate()));
+
+            MedicamentoDAO dao = new MedicamentoDAO();
+
+            if(dao.guardar(med))
+            {
+                JOptionPane.showMessageDialog( null,"Medicamento guardado correctamente");
+                listarMedicamentos();
+                Limpiar();    
+
+            }else
+            {
+                JOptionPane.showMessageDialog( null,"Error al guardar medicamento");
+            } 
+        }catch(Exception e)
         {
-            JOptionPane.showMessageDialog( null,"Medicamento guardado correctamente");
-            listarMedicamentos();
-            Limpiar();    
-
-        }else
-        {
-            JOptionPane.showMessageDialog( null,"Error al guardar medicamento");
-        } 
+            JOptionPane.showMessageDialog(null,"Error inesperado: " + e.getMessage());
+        }
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void jtablaMedicamentosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtablaMedicamentosMouseClicked
@@ -413,96 +454,118 @@ public class medicamentos extends javax.swing.JPanel {
     }//GEN-LAST:event_jtablaMedicamentosMouseClicked
 
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
-        if(idSeleccionado == 0)
+        try
         {
-            JOptionPane.showMessageDialog(null,"Seleccione un medicamento");
-            return;
-        }
-
-        if(txtNombre.getText().trim().isEmpty())
-        {
-            JOptionPane.showMessageDialog(null,"Ingrese el nombre");
-            return;
-        }
-
-        if(txtStock.getText().trim().isEmpty())
-        {
-            JOptionPane.showMessageDialog( null,"Ingrese el stock");
-            return;
-        }
-
-        if(txtPrecio.getText().trim().isEmpty())
-        {
-            JOptionPane.showMessageDialog(null,"Ingrese el precio");
-            return;
-        }
-
-        if(txtFecha.getDate() == null)
-        {
-            JOptionPane.showMessageDialog(null,"Seleccione una fecha");
-            return;
-        }
-        int stock;
-        double precio;
-
-            try {
-                stock = Integer.parseInt(txtStock.getText().trim());
-
-                if(stock < 0)
-                {
-                    JOptionPane.showMessageDialog(null,"El stock no puede ser negativo");
-                    return;
-                }
-
-                precio = Double.parseDouble(txtPrecio.getText().trim());
-
-                if(precio <= 0)
-                {
-                    JOptionPane.showMessageDialog(null,"El precio debe ser mayor a 0");
-                    return;
-                }
-                 } catch(NumberFormatException e) {
-
-                    JOptionPane.showMessageDialog(null,"Stock y Precio deben ser numéricos");
-                    return;
-                }
-
-
-        Medicamento med = new Medicamento();
-
-        med.setIdMedicamento(idSeleccionado);
-
-        med.setNombre(txtNombre.getText().trim());
-
-        med.setDescripcion(txtDescripcion.getText().trim());
-
-        med.setCategoria(cbCategoria.getSelectedItem().toString());
-
-        med.setStock(stock);
-
-        med.setPrecio(precio);
-
-        med.setLaboratorio(txtLaboratorio.getText().trim());
-
-        SimpleDateFormat formato =new SimpleDateFormat("yyyy-MM-dd");
-
-        med.setFechaVencimiento(formato.format(txtFecha.getDate()));
-
-        MedicamentoDAO dao = new MedicamentoDAO();
-
-        if(dao.actualizar(med))
-        {
-            JOptionPane.showMessageDialog(null,"Medicamento actualizado correctamente");
-
-            listarMedicamentos();
-            Limpiar();
             
-        }
-        else
-        {
-            JOptionPane.showMessageDialog( null,"No se pudo actualizar");
-        }
+        
+            if(idSeleccionado == 0)
+            {
+                JOptionPane.showMessageDialog(null,"Seleccione un medicamento");
+                return;
+            }
 
+            if(txtNombre.getText().trim().isEmpty())
+            {
+                JOptionPane.showMessageDialog(null,"Ingrese el nombre");
+                return;
+            }
+            if(txtNombre.getText().trim().length() < 3)
+            {
+                JOptionPane.showMessageDialog(null,"Ingrese un nombre válido");
+                return;
+            }
+
+            if(txtStock.getText().trim().isEmpty())
+            {
+                JOptionPane.showMessageDialog( null,"Ingrese el stock");
+                return;
+            }
+
+            if(txtPrecio.getText().trim().isEmpty())
+            {
+                JOptionPane.showMessageDialog(null,"Ingrese el precio");
+                return;
+            }
+
+
+            if(txtFecha.getDate() == null)
+            {
+                JOptionPane.showMessageDialog(null,"Seleccione una fecha");
+                return;
+            }
+            if(txtFecha.getDate().before(new java.util.Date()))
+            {
+                JOptionPane.showMessageDialog(null,"La fecha de vencimiento debe ser futura");
+                return;
+            }
+            if(txtLaboratorio.getText().trim().isEmpty())
+            {
+                JOptionPane.showMessageDialog(null,"Ingrese el laboratorio");
+                return;
+            }
+            int stock;
+            double precio;
+
+                try {
+                    stock = Integer.parseInt(txtStock.getText().trim());
+
+                    if(stock < 0)
+                    {
+                        JOptionPane.showMessageDialog(null,"El stock no puede ser negativo");
+                        return;
+                    }
+
+                    precio = Double.parseDouble(txtPrecio.getText().trim());
+
+                    if(precio <= 0)
+                    {
+                        JOptionPane.showMessageDialog(null,"El precio debe ser mayor a 0");
+                        return;
+                    }
+                     } catch(NumberFormatException e) {
+
+                        JOptionPane.showMessageDialog(null,"Stock y Precio deben ser numéricos");
+                        return;
+                    }
+
+
+            Medicamento med = new Medicamento();
+
+            med.setIdMedicamento(idSeleccionado);
+
+            med.setNombre(txtNombre.getText().trim());
+
+            med.setDescripcion(txtDescripcion.getText().trim());
+
+            med.setCategoria(cbCategoria.getSelectedItem().toString());
+
+            med.setStock(stock);
+
+            med.setPrecio(precio);
+
+            med.setLaboratorio(txtLaboratorio.getText().trim());
+
+            SimpleDateFormat formato =new SimpleDateFormat("yyyy-MM-dd");
+
+            med.setFechaVencimiento(formato.format(txtFecha.getDate()));
+
+            MedicamentoDAO dao = new MedicamentoDAO();
+
+            if(dao.actualizar(med))
+            {
+                JOptionPane.showMessageDialog(null,"Medicamento actualizado correctamente");
+                listarMedicamentos();
+                Limpiar();
+
+            }
+            else
+            {
+                JOptionPane.showMessageDialog( null,"No se pudo actualizar");
+            }
+        }catch(Exception e)
+        {
+            JOptionPane.showMessageDialog(null,"Error inesperado: " + e.getMessage());
+        }
     }//GEN-LAST:event_btnActualizarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
@@ -554,6 +617,42 @@ public class medicamentos extends javax.swing.JPanel {
         }
         // TODO add your handling code here:
     }//GEN-LAST:event_txtBuscarMedicamentoKeyReleased
+
+    private void txtStockKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtStockKeyTyped
+        char c = evt.getKeyChar();
+        if(!Character.isDigit(c))
+        {
+            evt.consume();
+        }
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtStockKeyTyped
+
+    private void txtPrecioKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPrecioKeyTyped
+        char c = evt.getKeyChar();
+        if(!Character.isDigit(c)&& c != '.')
+        {
+            evt.consume();
+        }
+
+        if(c == '.'&& txtPrecio.getText().contains("."))
+        {
+            evt.consume();
+        }
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtPrecioKeyTyped
+
+    private void txtLaboratorioKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtLaboratorioKeyTyped
+        char c = evt.getKeyChar();
+        if(!Character.isLetter(c)
+                && !Character.isDigit(c)
+                && c != ' '
+                && c != '.'
+                && c != '-')
+        {
+            evt.consume();
+        }
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtLaboratorioKeyTyped
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

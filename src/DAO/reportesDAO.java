@@ -44,8 +44,7 @@ public class reportesDAO {
         {
             Connection con = cn.conectar();
 
-            PreparedStatement ps =
-                    con.prepareStatement(sql);
+            PreparedStatement ps =con.prepareStatement(sql);
 
             ResultSet rs = ps.executeQuery();
 
@@ -53,59 +52,49 @@ public class reportesDAO {
 
                 reporte rep = new reporte();
 
-                rep.setFecha(
-                        rs.getDate("FechaVenta")
-                                .toLocalDate());
+                rep.setFecha(rs.getDate("FechaVenta").toLocalDate());
 
-                rep.setCliente(
-                        rs.getString("Cliente"));
+                rep.setCliente(rs.getString("Cliente"));
 
-                rep.setMedicamento(
-                        rs.getString("Medicamento"));
+                rep.setMedicamento(rs.getString("Medicamento"));
 
-                rep.setCantidad(
-                        rs.getInt("Cantidad"));
+                rep.setCantidad(rs.getInt("Cantidad"));
 
-                rep.setPrecio(
-                        rs.getDouble("Precio_Unitario"));
+                rep.setPrecio(rs.getDouble("Precio_Unitario"));
 
-                rep.setSubtotal(
-                        rs.getDouble("Subtotal"));
+                rep.setSubtotal(rs.getDouble("Subtotal"));
 
                 lista.add(rep);
             }
         }catch(SQLException e) 
         {
-            JOptionPane.showMessageDialog(
-                    null,
-                    "Error Reporte: "
-                    + e.getMessage());
+            JOptionPane.showMessageDialog(null,"Error Reporte: "+ e.getMessage());
         }
         return lista;
     }
     public double totalVentas()
     {
-     double total = 0;
+        double total = 0;
 
-     String sql ="SELECT SUM(Total) AS Total "+ "FROM Ventas";
-      try
-      {
-        Connection con = cn.conectar();
+        String sql ="SELECT SUM(Total) AS Total "+ "FROM Ventas";
+         try
+         {
+            Connection con = cn.conectar();
 
-        PreparedStatement ps =con.prepareStatement(sql);
+            PreparedStatement ps =con.prepareStatement(sql);
 
-        ResultSet rs = ps.executeQuery();
+            ResultSet rs = ps.executeQuery();
 
-        if(rs.next())
-        {
-         total = rs.getDouble("Total");
-        }
+            if(rs.next())
+            {
+             total = rs.getDouble("Total");
+            }
 
-      }catch(SQLException e)
-       {
-         JOptionPane.showMessageDialog(null,e.getMessage());
-       }
-       return total;
+         }catch(SQLException e)
+          {
+                JOptionPane.showMessageDialog(null,e.getMessage());
+          }
+          return total;
     }
     public int productosVendidos()
     {
@@ -144,22 +133,18 @@ public class reportesDAO {
         {
             Connection con = cn.conectar();
 
-            PreparedStatement ps =
-                    con.prepareStatement(sql);
+            PreparedStatement ps = con.prepareStatement(sql);
 
             ResultSet rs = ps.executeQuery();
 
             if(rs.next())
             {
-                total =
-                        rs.getInt("Total");
+                total =rs.getInt("Total");
             }
 
         }catch(SQLException e)
         {
-            JOptionPane.showMessageDialog(
-                    null,
-                    e.getMessage());
+            JOptionPane.showMessageDialog(null,e.getMessage());
         }
 
         return total;
@@ -181,22 +166,18 @@ public class reportesDAO {
         {
             Connection con = cn.conectar();
 
-            PreparedStatement ps =
-                    con.prepareStatement(sql);
+            PreparedStatement ps = con.prepareStatement(sql);
 
             ResultSet rs = ps.executeQuery();
 
             if(rs.next())
             {
-                nombre =
-                        rs.getString("Nombre");
+                nombre = rs.getString("Nombre");
             }
 
         }catch(SQLException e)
         {
-            JOptionPane.showMessageDialog(
-                    null,
-                    e.getMessage());
+            JOptionPane.showMessageDialog(null,e.getMessage());
         }
 
         return nombre;
@@ -274,8 +255,7 @@ public class reportesDAO {
         {
             Connection con = cn.conectar();
 
-            PreparedStatement ps =
-                    con.prepareStatement(sql);
+            PreparedStatement ps =con.prepareStatement(sql);
 
             ps.setDate(1, inicio);
             ps.setDate(2, fin);
@@ -289,9 +269,7 @@ public class reportesDAO {
 
         }catch(SQLException e)
         {
-            JOptionPane.showMessageDialog(
-                    null,
-                    e.getMessage());
+            JOptionPane.showMessageDialog(null,e.getMessage());
         }
 
         return total;
@@ -312,8 +290,7 @@ public class reportesDAO {
         {
             Connection con = cn.conectar();
 
-            PreparedStatement ps =
-                    con.prepareStatement(sql);
+            PreparedStatement ps =con.prepareStatement(sql);
 
             ps.setDate(1, inicio);
             ps.setDate(2, fin);
@@ -327,9 +304,7 @@ public class reportesDAO {
 
         }catch(SQLException e)
         {
-            JOptionPane.showMessageDialog(
-                    null,
-                    e.getMessage());
+            JOptionPane.showMessageDialog(null,e.getMessage());
         }
 
         return total;
@@ -348,8 +323,7 @@ public class reportesDAO {
         {
             Connection con = cn.conectar();
 
-            PreparedStatement ps =
-                    con.prepareStatement(sql);
+            PreparedStatement ps =con.prepareStatement(sql);
 
             ps.setDate(1, inicio);
             ps.setDate(2, fin);
@@ -363,9 +337,7 @@ public class reportesDAO {
 
         }catch(SQLException e)
         {
-            JOptionPane.showMessageDialog(
-                    null,
-                    e.getMessage());
+            JOptionPane.showMessageDialog(null,e.getMessage());
         }
 
         return total;
@@ -390,8 +362,7 @@ public class reportesDAO {
         {
             Connection con = cn.conectar();
 
-            PreparedStatement ps =
-                    con.prepareStatement(sql);
+            PreparedStatement ps =con.prepareStatement(sql);
 
             ps.setDate(1, inicio);
             ps.setDate(2, fin);

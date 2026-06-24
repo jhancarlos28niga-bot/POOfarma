@@ -26,8 +26,6 @@ public class inventario extends javax.swing.JPanel {
     public inventario() {
         initComponents();
         ListarMedicamentos();
-        //DefaultTableModel modelo =(DefaultTableModel)tablaMovimientos.getModel();
-        //modelo.setRowCount(0);
         ComboBox();
         
     }
@@ -59,14 +57,11 @@ public class inventario extends javax.swing.JPanel {
     }
     public void listarHistorial(int idMedicamento)
     {
-        MovimientoInventariosDAO dao =
-                new MovimientoInventariosDAO();
+        MovimientoInventariosDAO dao =new MovimientoInventariosDAO();
 
-        List<MovimientoInventario> lista =
-                dao.listarPorMedicamento(idMedicamento);
+        List<MovimientoInventario> lista =dao.listarPorMedicamento(idMedicamento);
 
-        DefaultTableModel modelo =
-                (DefaultTableModel) tblHistorial.getModel();
+        DefaultTableModel modelo =(DefaultTableModel) tblHistorial.getModel();
 
         modelo.setRowCount(0);
 
@@ -83,11 +78,13 @@ public class inventario extends javax.swing.JPanel {
     private void ComboBox()
     {
         cmbMotivo.removeAllItems();
+        cmbMotivo.addItem("Seleccione un motivo");
         cmbMotivo.addItem("Reposición de Stock");
         cmbMotivo.addItem("Compra a Proveedor");
         cmbMotivo.addItem("Donación");
         cmbMotivo.addItem("Devolución");
         cmbMotivo.addItem("Ajuste de Inventario");
+        
     }
 
     @SuppressWarnings("unchecked")
@@ -156,6 +153,12 @@ public class inventario extends javax.swing.JPanel {
         txtStock.setEditable(false);
 
         jLabel6.setText("Cantidad");
+
+        txtCantidad.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtCantidadKeyTyped(evt);
+            }
+        });
 
         jLabel7.setText("Motivo:");
 
@@ -260,43 +263,58 @@ public class inventario extends javax.swing.JPanel {
     }//GEN-LAST:event_jtablaMedicamentosMouseClicked
 
     private void btnRegistrarEntradaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarEntradaActionPerformed
-        if(idMedicamentoSeleccionado == 0)
-        {
-            JOptionPane.showMessageDialog(null,"Seleccione un medicamento");
-            return;
-        }
-        if(txtCantidad.getText().trim().isEmpty())
-        {
-            JOptionPane.showMessageDialog(null,"Ingrese una cantidad");
-            return;
-        }
-        int cantidad = Integer.parseInt(txtCantidad.getText());
-
-        String motivo =cmbMotivo.getSelectedItem().toString();
         
-        MedicamentoDAO dao = new MedicamentoDAO();
-        
-         if(dao.registrarEntrada(idMedicamentoSeleccionado,cantidad))
-         {
-             MovimientoInventario mov =new MovimientoInventario();
-             mov.setIdMedicamento(idMedicamentoSeleccionado);
-             mov.setTipoMovimiento("Entrada");
-             mov.setCantidad(cantidad);             
-             mov.setFechaMovimiento(LocalDate.now().toString());             
-             mov.setObservacion(motivo);             
-             MovimientoInventariosDAO daoMov =new MovimientoInventariosDAO();             
-             daoMov.guardar(mov);            
-             JOptionPane.showMessageDialog( null,"Entrada registrada");
-             ListarMedicamentos();
-             txtCantidad.setText("");
-             if(idMedicamentoSeleccionado > 0)
+        try
+        {
+            if(idMedicamentoSeleccionado == 0)
             {
-                listarHistorial(idMedicamentoSeleccionado);
+                JOptionPane.showMessageDialog(null,"Seleccione un medicamento");
+                return;
             }
-             
-         }
-    
-       
+            if(txtCantidad.getText().trim().isEmpty())
+            {
+                JOptionPane.showMessageDialog(null,"Ingrese una cantidad");
+                return;
+            }
+            if(cmbMotivo.getSelectedIndex() == 0)
+            {
+                JOptionPane.showMessageDialog( null,"Seleccione un motivo");
+                return;
+            }
+            int cantidad = Integer.parseInt(txtCantidad.getText());
+            if(cantidad <= 0)
+            {
+                JOptionPane.showMessageDialog(null,"La cantidad debe ser mayor a cero");
+                return;
+            }
+
+            String motivo = cmbMotivo.getSelectedItem().toString();
+
+            MedicamentoDAO dao = new MedicamentoDAO();
+
+             if(dao.registrarEntrada(idMedicamentoSeleccionado,cantidad))
+             {
+                 MovimientoInventario mov =new MovimientoInventario();
+                 mov.setIdMedicamento(idMedicamentoSeleccionado);
+                 mov.setTipoMovimiento("Entrada");
+                 mov.setCantidad(cantidad);             
+                 mov.setFechaMovimiento(LocalDate.now().toString());             
+                 mov.setObservacion(motivo);             
+                 MovimientoInventariosDAO daoMov =new MovimientoInventariosDAO();             
+                 daoMov.guardar(mov);            
+                 JOptionPane.showMessageDialog( null,"Entrada registrada");
+                 ListarMedicamentos();
+                 txtCantidad.setText("");
+                 if(idMedicamentoSeleccionado > 0)
+                {
+                    listarHistorial(idMedicamentoSeleccionado);
+                }
+
+             } 
+        }catch(Exception e)
+        {
+            JOptionPane.showMessageDialog( null,"Error al registrar entrada:"+e.getMessage());
+        }
         // TODO add your handling code here:
     }//GEN-LAST:event_btnRegistrarEntradaActionPerformed
 
@@ -319,6 +337,14 @@ public class inventario extends javax.swing.JPanel {
         }
         // TODO add your handling code here:
     }//GEN-LAST:event_txtBuscarKeyReleased
+
+    private void txtCantidadKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCantidadKeyTyped
+        if(!Character.isDigit(evt.getKeyChar()))
+        {
+            evt.consume();
+        }
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtCantidadKeyTyped
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

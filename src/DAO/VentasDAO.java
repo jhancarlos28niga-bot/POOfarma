@@ -22,10 +22,10 @@ public class VentasDAO {
     Conexion cn = new Conexion();
     public int guardarVenta(Ventas venta)
     {
-        String sql =
-        "INSERT INTO Ventas "
-      + "(ID_Cliente, FechaVenta, Total) "
-      + "VALUES (?, ?, ?)";
+            String sql =
+            "INSERT INTO Ventas "
+          + "(ID_Cliente, FechaVenta, Total) "
+          + "VALUES (?, ?, ?)";
       
      try
      {
