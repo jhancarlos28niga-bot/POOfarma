@@ -43,7 +43,8 @@ public class ClientesDAO {
     public List<Cliente> listar()
     {
         List<Cliente> lista = new ArrayList<>();
-        String sql = "SELECT * FROM Clientes";
+        String sql = "SELECT * FROM Clientes "
+                +"WHERE Estado = 1";
         try 
         {
             Connection con = cn.conectar();
@@ -56,6 +57,7 @@ public class ClientesDAO {
                 cli.setDNI(rs.getString("DNI"));
                 cli.setNombre(rs.getString("Nombre"));
                 cli.setTelefono( rs.getString("Telefono"));
+                cli.setEstado(rs.getInt("Estado"));
                 lista.add(cli);
             } 
         }catch(SQLException e)
@@ -89,7 +91,9 @@ public class ClientesDAO {
     }
     public boolean eliminar(int id)
     {
-        String sql = "DELETE FROM Clientes WHERE ID_Cliente=?";
+        String sql = "UPDATE Clientes "
+                +"SET Estado = 0 "
+                +"WHERE ID_Cliente=?";
         try 
         { 
             Connection con = cn.conectar(); 
@@ -105,7 +109,8 @@ public class ClientesDAO {
     }
     public Cliente buscarCliente(String dni)
     {
-        String sql = "SELECT * FROM Clientes WHERE DNI = ?";
+        String sql = "SELECT * FROM Clientes WHERE DNI = ? "
+                +"AND Estado = 1";
         try
         {
             Connection con = cn.conectar();
@@ -151,6 +156,53 @@ public class ClientesDAO {
             return false;
         }
 
-}
+    }
+    public List<Cliente> buscarClienteDinac(String nombre)
+    {
+        List<Cliente> lista = new ArrayList<>();
+        String sql = "SELECT * FROM Clientes WHERE Nombre LIKE ? "
+                +"AND Estado = 1";
+        try
+        {
+            Connection con = cn.conectar();
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, "%" + nombre + "%");
+            ResultSet rs = ps.executeQuery();
+            while(rs.next())
+            {
+                Cliente cli = new Cliente();
+                cli.setID_Cliente(rs.getInt("ID_Cliente"));
+                cli.setDNI(rs.getString("DNI"));
+                cli.setNombre(rs.getString("Nombre"));
+                cli.setTelefono(rs.getString("Telefono"));
+                
+                lista.add(cli);
+            }
+        }catch(SQLException e)
+        {
+            JOptionPane.showMessageDialog(null, "Error al buscar: " + e.getMessage());
+            
+        }
+        return lista;
+    }
+    public int contarClientes()
+    {
+        int total = 0;
+        String sql = "SELECT COUNT(*) FROM Clientes "
+                +"WHERE Estado = 1";
+        try {
+            Connection con = cn.conectar();
+            PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                total = rs.getInt(1);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error al contar clientes: " + e.getMessage());
+        }
+
+        return total;
+    }
     
 }

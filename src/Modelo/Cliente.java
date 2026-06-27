@@ -13,15 +13,17 @@ public class Cliente {
     private String DNI;
     private String Nombre;
     private String Telefono;
+    private int estado;
 
     public Cliente() {
     }
 
-    public Cliente(int ID_Cliente, String DNI, String Nombre, String Telefono) {
+    public Cliente(int ID_Cliente, String DNI, String Nombre, String Telefono, int estado) {
         this.ID_Cliente = ID_Cliente;
         this.DNI = DNI;
         this.Nombre = Nombre;
         this.Telefono = Telefono;
+        this.estado = estado;
     }
 
     public int getID_Cliente() {
@@ -55,5 +57,15 @@ public class Cliente {
     public void setTelefono(String Telefono) {
         this.Telefono = Telefono;
     }
+
+    public int getEstado() {
+        return estado;
+    }
+
+    public void setEstado(int estado) {
+        this.estado = estado;
+    }
+
+    
     
 }

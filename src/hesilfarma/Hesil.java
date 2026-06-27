@@ -34,7 +34,6 @@ public class Hesil extends javax.swing.JFrame {
 
         principalventana = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         txtUsuario = new javax.swing.JTextField();
@@ -46,33 +45,31 @@ public class Hesil extends javax.swing.JFrame {
         header = new javax.swing.JPanel();
         salirbtn = new javax.swing.JPanel();
         exitbtn = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setLocationByPlatform(true);
         setUndecorated(true);
         setResizable(false);
 
-        principalventana.setBackground(new java.awt.Color(255, 255, 255));
+        principalventana.setBackground(new java.awt.Color(241, 248, 241));
+        principalventana.setForeground(new java.awt.Color(241, 248, 241));
         principalventana.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/images/hersil-sa-AA2309BD69786C2E233630thumbnail.jpeg"))); // NOI18N
-        principalventana.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 380, 470, 190));
+        principalventana.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 410, 470, 190));
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel2.setText("INICIAR SESIÓN");
-        principalventana.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 60, 290, 50));
-
-        jLabel3.setBackground(new java.awt.Color(0, 0, 0));
+        jLabel3.setBackground(new java.awt.Color(30, 78, 160));
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel3.setForeground(new java.awt.Color(30, 78, 160));
         jLabel3.setText("USUARIO");
-        principalventana.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 130, -1, -1));
+        principalventana.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 160, -1, -1));
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel4.setForeground(new java.awt.Color(30, 78, 160));
         jLabel4.setText("CONTRASEÑA");
-        principalventana.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 210, -1, -1));
+        principalventana.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 240, -1, -1));
 
         txtUsuario.setBackground(new java.awt.Color(255, 255, 255));
         txtUsuario.setText("Ingrese su nombre de Usuario");
@@ -82,9 +79,9 @@ public class Hesil extends javax.swing.JFrame {
                 txtUsuarioMousePressed(evt);
             }
         });
-        principalventana.add(txtUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 170, -1, -1));
-        principalventana.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 190, 380, 10));
-        principalventana.add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 260, 380, 10));
+        principalventana.add(txtUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 200, -1, -1));
+        principalventana.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 220, 380, 10));
+        principalventana.add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 290, 380, 10));
 
         txtContraseña.setBackground(new java.awt.Color(255, 255, 255));
         txtContraseña.setText("********");
@@ -94,15 +91,18 @@ public class Hesil extends javax.swing.JFrame {
                 txtContraseñaMousePressed(evt);
             }
         });
-        principalventana.add(txtContraseña, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 240, -1, -1));
+        principalventana.add(txtContraseña, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 270, -1, -1));
 
-        loginbtn.setBackground(new java.awt.Color(45, 78, 155));
+        loginbtn.setBackground(new java.awt.Color(34, 177, 76));
         loginbtn.setForeground(new java.awt.Color(0, 0, 0));
+        loginbtn.setPreferredSize(new java.awt.Dimension(140, 40));
 
+        loginbtnTX.setBackground(new java.awt.Color(34, 177, 76));
         loginbtnTX.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         loginbtnTX.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         loginbtnTX.setText("ENTRAR");
         loginbtnTX.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        loginbtnTX.setPreferredSize(new java.awt.Dimension(140, 40));
         loginbtnTX.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 loginbtnTXMouseClicked(evt);
@@ -130,9 +130,9 @@ public class Hesil extends javax.swing.JFrame {
                 .addComponent(loginbtnTX, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        principalventana.add(loginbtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 310, 100, 40));
+        principalventana.add(loginbtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 340, 100, 40));
 
-        header.setBackground(new java.awt.Color(255, 255, 255));
+        header.setBackground(new java.awt.Color(241, 248, 241));
         header.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
             public void mouseDragged(java.awt.event.MouseEvent evt) {
                 headerMouseDragged(evt);
@@ -144,7 +144,9 @@ public class Hesil extends javax.swing.JFrame {
             }
         });
 
-        salirbtn.setBackground(new java.awt.Color(255, 255, 255));
+        salirbtn.setBackground(new java.awt.Color(220, 70, 70));
+        salirbtn.setBorder(javax.swing.BorderFactory.createMatteBorder(3, 3, 3, 3, new java.awt.Color(0, 0, 0)));
+        salirbtn.setForeground(new java.awt.Color(220, 70, 70));
 
         exitbtn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         exitbtn.setForeground(new java.awt.Color(0, 0, 0));
@@ -180,16 +182,26 @@ public class Hesil extends javax.swing.JFrame {
             headerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(headerLayout.createSequentialGroup()
                 .addComponent(salirbtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 593, Short.MAX_VALUE))
+                .addGap(0, 587, Short.MAX_VALUE))
         );
         headerLayout.setVerticalGroup(
             headerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(headerLayout.createSequentialGroup()
                 .addComponent(salirbtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 17, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         principalventana.add(header, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 640, 50));
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel2.setText("Sistema de Gestión Farmacéutica");
+        principalventana.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 100, 290, 50));
+
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(34, 177, 76));
+        jLabel5.setText("INICIAR SESIÓN");
+        principalventana.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 50, 290, 50));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -226,7 +238,7 @@ public class Hesil extends javax.swing.JFrame {
     }//GEN-LAST:event_exitbtnMouseEntered
 
     private void exitbtnMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exitbtnMouseExited
-                salirbtn.setBackground(Color.white);
+                salirbtn.setBackground(new Color(220,70,70));
     }//GEN-LAST:event_exitbtnMouseExited
 
     private void loginbtnTXMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_loginbtnTXMouseEntered
@@ -304,6 +316,7 @@ public class Hesil extends javax.swing.JFrame {
     }//GEN-LAST:event_loginbtnTXMouseClicked
 
     public static void main(String args[]) {
+        
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -332,6 +345,7 @@ public class Hesil extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JPanel loginbtn;

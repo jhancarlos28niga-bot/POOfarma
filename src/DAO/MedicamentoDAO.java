@@ -50,7 +50,8 @@ public class MedicamentoDAO {
     {
         List<Medicamento> lista = new ArrayList<>();
 
-        String sql = "SELECT * FROM Medicamentos";
+        String sql = "SELECT * FROM Medicamentos "
+                +"WHERE Estado = 1";
 
         try {
 
@@ -79,6 +80,8 @@ public class MedicamentoDAO {
                 med.setFechaVencimiento( rs.getString("Fecha_Vencimiento"));
 
                 med.setLaboratorio(rs.getString("Laboratorio"));
+                
+                med.setEstado(rs.getInt("Estado"));
 
                 lista.add(med);
             }
@@ -90,11 +93,12 @@ public class MedicamentoDAO {
 
         return lista;
         }
-        public List<Medicamento> buscar(String nombre) {
-
+        public List<Medicamento> buscar(String nombre) 
+        {
         List<Medicamento> lista = new ArrayList<>();
 
-        String sql = "SELECT * FROM Medicamentos WHERE Nombre LIKE ?";
+        String sql = "SELECT * FROM Medicamentos WHERE Nombre LIKE ?"
+                +"AND Estado = 1";
 
         try {
 
@@ -125,6 +129,8 @@ public class MedicamentoDAO {
                 med.setFechaVencimiento(rs.getString("Fecha_Vencimiento"));
 
                 med.setLaboratorio(rs.getString("Laboratorio"));
+                
+                med.setEstado(rs.getInt("Estado"));
 
                 lista.add(med);
             }
@@ -177,7 +183,8 @@ public class MedicamentoDAO {
     }
     public boolean eliminar(int id)
     {
-        String sql = "DELETE FROM Medicamentos " 
+        String sql = "UPDATE Medicamentos "
+                + "SET Estado = 0" 
                 + "WHERE ID_Medicamento = ?";
         try
         {
@@ -251,7 +258,7 @@ public class MedicamentoDAO {
         String sql =
                 "SELECT * "
               + "FROM Medicamentos "
-              + "WHERE Stock > 0";
+              + "WHERE Stock > 0 AND Estado = 1";
 
         try
         {
@@ -280,6 +287,8 @@ public class MedicamentoDAO {
                 med.setFechaVencimiento(rs.getString("Fecha_Vencimiento"));
 
                 med.setLaboratorio(rs.getString("Laboratorio"));
+                
+                med.setEstado((rs.getInt("Estado")));
 
                 lista.add(med);
             }

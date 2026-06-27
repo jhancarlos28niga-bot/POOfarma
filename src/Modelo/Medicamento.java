@@ -17,8 +17,13 @@ public class Medicamento {
     private double precio;
     private String fechaVencimiento;
     private String laboratorio;
+    private int estado;
 
-    public Medicamento(int idMedicamento, String nombre, String descripcion, String categoria, int stock, double precio, String fechaVencimiento, String laboratorio) {
+    public Medicamento() {
+    }
+    
+    
+    public Medicamento(int idMedicamento, String nombre, String descripcion, String categoria, int stock, double precio, String fechaVencimiento, String laboratorio, int estado) {
         this.idMedicamento = idMedicamento;
         this.nombre = nombre;
         this.descripcion = descripcion;
@@ -27,9 +32,7 @@ public class Medicamento {
         this.precio = precio;
         this.fechaVencimiento = fechaVencimiento;
         this.laboratorio = laboratorio;
-    }
-
-    public Medicamento() {
+        this.estado = estado;
     }
 
     public int getIdMedicamento() {
@@ -95,5 +98,15 @@ public class Medicamento {
     public void setLaboratorio(String laboratorio) {
         this.laboratorio = laboratorio;
     }
+
+    public int getEstado() {
+        return estado;
+    }
+
+    public void setEstado(int estado) {
+        this.estado = estado;
+    }
+
+    
     
 }

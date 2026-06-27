@@ -60,9 +60,9 @@ public class menu extends javax.swing.JFrame {
 
         jpPrincipal.setBackground(new java.awt.Color(255, 255, 255));
 
-        jPanel1.setBackground(new java.awt.Color(45, 78, 155));
+        jPanel1.setBackground(new java.awt.Color(32, 72, 140));
 
-        medicamentosbtn.setBackground(new java.awt.Color(45, 78, 155));
+        medicamentosbtn.setBackground(new java.awt.Color(32, 72, 140));
         medicamentosbtn.setBorder(javax.swing.BorderFactory.createMatteBorder(2, 2, 2, 2, new java.awt.Color(0, 0, 0)));
         medicamentosbtn.setPreferredSize(new java.awt.Dimension(112, 43));
 
@@ -104,7 +104,7 @@ public class menu extends javax.swing.JFrame {
                     .addContainerGap()))
         );
 
-        exitbtn.setBackground(new java.awt.Color(45, 78, 155));
+        exitbtn.setBackground(new java.awt.Color(32, 72, 140));
         exitbtn.setBorder(javax.swing.BorderFactory.createMatteBorder(2, 2, 2, 2, new java.awt.Color(0, 0, 0)));
         exitbtn.setPreferredSize(new java.awt.Dimension(112, 43));
 
@@ -143,7 +143,7 @@ public class menu extends javax.swing.JFrame {
                     .addContainerGap()))
         );
 
-        moverbtn.setBackground(new java.awt.Color(45, 78, 155));
+        moverbtn.setBackground(new java.awt.Color(32, 72, 140));
         moverbtn.setBorder(javax.swing.BorderFactory.createMatteBorder(2, 2, 2, 2, new java.awt.Color(0, 0, 0)));
 
         jLabel1.setBackground(new java.awt.Color(255, 255, 255));
@@ -167,7 +167,7 @@ public class menu extends javax.swing.JFrame {
             .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        reportesbtn.setBackground(new java.awt.Color(45, 78, 155));
+        reportesbtn.setBackground(new java.awt.Color(32, 72, 140));
         reportesbtn.setBorder(javax.swing.BorderFactory.createMatteBorder(2, 2, 2, 2, new java.awt.Color(0, 0, 0)));
 
         reportestxt.setBackground(new java.awt.Color(255, 255, 255));
@@ -198,7 +198,7 @@ public class menu extends javax.swing.JFrame {
             .addComponent(reportestxt, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE)
         );
 
-        inventariobtn.setBackground(new java.awt.Color(45, 78, 155));
+        inventariobtn.setBackground(new java.awt.Color(32, 72, 140));
         inventariobtn.setBorder(javax.swing.BorderFactory.createMatteBorder(2, 2, 2, 2, new java.awt.Color(0, 0, 0)));
         inventariobtn.setPreferredSize(new java.awt.Dimension(112, 43));
 
@@ -230,7 +230,7 @@ public class menu extends javax.swing.JFrame {
             .addComponent(inventariotxt, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 39, Short.MAX_VALUE)
         );
 
-        ventasbtn.setBackground(new java.awt.Color(45, 78, 155));
+        ventasbtn.setBackground(new java.awt.Color(32, 72, 140));
         ventasbtn.setBorder(javax.swing.BorderFactory.createMatteBorder(2, 2, 2, 2, new java.awt.Color(0, 0, 0)));
         ventasbtn.setPreferredSize(new java.awt.Dimension(112, 43));
 
@@ -261,7 +261,7 @@ public class menu extends javax.swing.JFrame {
             .addComponent(ventastxt, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 39, Short.MAX_VALUE)
         );
 
-        clientesbtn.setBackground(new java.awt.Color(45, 78, 155));
+        clientesbtn.setBackground(new java.awt.Color(32, 72, 140));
         clientesbtn.setBorder(javax.swing.BorderFactory.createMatteBorder(2, 2, 2, 2, new java.awt.Color(0, 0, 0)));
         clientesbtn.setPreferredSize(new java.awt.Dimension(112, 43));
 
@@ -330,11 +330,11 @@ public class menu extends javax.swing.JFrame {
         contenido.setLayout(contenidoLayout);
         contenidoLayout.setHorizontalGroup(
             contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 619, Short.MAX_VALUE)
+            .addGap(0, 656, Short.MAX_VALUE)
         );
         contenidoLayout.setVerticalGroup(
             contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 786, Short.MAX_VALUE)
+            .addGap(0, 818, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout jpPrincipalLayout = new javax.swing.GroupLayout(jpPrincipal);
@@ -343,7 +343,7 @@ public class menu extends javax.swing.JFrame {
             jpPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpPrincipalLayout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(contenido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(12, 12, 12))
         );
@@ -368,11 +368,11 @@ public class menu extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void exitTextMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exitTextMouseEntered
-        exitbtn.setBackground(new Color(33,199,254));        
+        exitbtn.setBackground(new Color(72,130,255));        
     }//GEN-LAST:event_exitTextMouseEntered
 
     private void exitTextMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exitTextMouseExited
-        exitbtn.setBackground(new Color(45,78,155));
+        exitbtn.setBackground(new Color(32,72,140));
     }//GEN-LAST:event_exitTextMouseExited
 
     private void exitTextMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exitTextMouseClicked
@@ -387,11 +387,11 @@ public class menu extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabel1MouseDragged
 
     private void medicamentosTextMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_medicamentosTextMouseExited
-        medicamentosbtn.setBackground(new Color(45,78,155));
+        medicamentosbtn.setBackground(new Color(32,72,140));
     }//GEN-LAST:event_medicamentosTextMouseExited
 
     private void medicamentosTextMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_medicamentosTextMouseEntered
-        medicamentosbtn.setBackground(new Color(33,199,254));
+        medicamentosbtn.setBackground(new Color(72,130,255));
     }//GEN-LAST:event_medicamentosTextMouseEntered
 
     private void medicamentosTextMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_medicamentosTextMouseClicked
@@ -405,42 +405,42 @@ public class menu extends javax.swing.JFrame {
     }//GEN-LAST:event_medicamentosTextMouseClicked
 
     private void clientestxtMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clientestxtMouseEntered
-        clientesbtn.setBackground(new Color(33,199,254));
+        clientesbtn.setBackground(new Color(72,130,255));
         // TODO add your handling code here:
     }//GEN-LAST:event_clientestxtMouseEntered
 
     private void clientestxtMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clientestxtMouseExited
-        clientesbtn.setBackground(new Color(45,78,155));
+        clientesbtn.setBackground(new Color(32,72,140));
         // TODO add your handling code here:
     }//GEN-LAST:event_clientestxtMouseExited
 
     private void ventastxtMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ventastxtMouseEntered
-        ventasbtn.setBackground(new Color(33,199,254));
+        ventasbtn.setBackground(new Color(72,130,255));
         // TODO add your handling code here:
     }//GEN-LAST:event_ventastxtMouseEntered
 
     private void ventastxtMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ventastxtMouseExited
-        ventasbtn.setBackground(new Color(45,78,155));
+        ventasbtn.setBackground(new Color(32,72,140));
         // TODO add your handling code here:
     }//GEN-LAST:event_ventastxtMouseExited
 
     private void inventariotxtMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_inventariotxtMouseEntered
-        inventariobtn.setBackground(new Color(33,199,254));
+        inventariobtn.setBackground(new Color(72,130,255));
         // TODO add your handling code here:
     }//GEN-LAST:event_inventariotxtMouseEntered
 
     private void inventariotxtMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_inventariotxtMouseExited
-        inventariobtn.setBackground(new Color(45,78,155));
+        inventariobtn.setBackground(new Color(32,72,140));
         // TODO add your handling code here:
     }//GEN-LAST:event_inventariotxtMouseExited
 
     private void reportestxtMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reportestxtMouseEntered
-        reportesbtn.setBackground(new Color(33,199,254));
+        reportesbtn.setBackground(new Color(72,130,255));
         // TODO add your handling code here:
     }//GEN-LAST:event_reportestxtMouseEntered
 
     private void reportestxtMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reportestxtMouseExited
-        reportesbtn.setBackground(new Color(45,78,155));
+        reportesbtn.setBackground(new Color(32,72,140   ));
         // TODO add your handling code here:
     }//GEN-LAST:event_reportestxtMouseExited
 
