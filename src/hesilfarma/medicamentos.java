@@ -371,7 +371,7 @@ public class medicamentos extends javax.swing.JPanel {
                     .addComponent(jLabel3)
                     .addComponent(txtBuscarMedicamento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 478, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 421, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
@@ -486,6 +486,11 @@ public class medicamentos extends javax.swing.JPanel {
                      JOptionPane.showMessageDialog(null,"El stock no puede ser negativo");
                      return;
                  }
+                 if(stock == 0)
+                 {
+                     JOptionPane.showMessageDialog(null,"El stock no puede ser 0");
+                     return;
+                 }
 
                  precio = Double.parseDouble( txtPrecio.getText().trim());
 
@@ -500,6 +505,13 @@ public class medicamentos extends javax.swing.JPanel {
                  JOptionPane.showMessageDialog(null,"Stock y Precio deben ser numéricos");
                  return;
              }
+          MedicamentoDAO dao = new MedicamentoDAO();
+
+            if (dao.existeMedicamento(txtNombre.getText().trim(),cbCategoria.getSelectedItem().toString())) 
+            {
+                JOptionPane.showMessageDialog(null,"Ya existe un medicamento con ese nombre y categoría.");
+                return;
+            }
 
            Medicamento med = new Medicamento();
 
@@ -519,7 +531,6 @@ public class medicamentos extends javax.swing.JPanel {
 
             med.setFechaVencimiento(formato.format(txtFecha.getDate()));
 
-            MedicamentoDAO dao = new MedicamentoDAO();
 
             if(dao.guardar(med))
             {
@@ -553,6 +564,9 @@ public class medicamentos extends javax.swing.JPanel {
                 txtStock.setText(jtablaMedicamentos.getValueAt(fila,4).toString());
 
                 txtPrecio.setText(jtablaMedicamentos.getValueAt(fila,5).toString());
+                btnGuardar.setEnabled(false);
+                btnActualizar.setEnabled(true);
+                btnEliminar.setEnabled(true);
                 try {
                     
                         SimpleDateFormat formato =new SimpleDateFormat("yyyy-MM-dd");
@@ -632,6 +646,11 @@ public class medicamentos extends javax.swing.JPanel {
                         JOptionPane.showMessageDialog(null,"El stock no puede ser negativo");
                         return;
                     }
+                    if(stock == 0)
+                 {
+                     JOptionPane.showMessageDialog(null,"El stock no puede ser 0");
+                     return;
+                 }
 
                     precio = Double.parseDouble(txtPrecio.getText().trim());
 
@@ -672,6 +691,7 @@ public class medicamentos extends javax.swing.JPanel {
             if(dao.actualizar(med))
             {
                 JOptionPane.showMessageDialog(null,"Medicamento actualizado correctamente");
+                btnGuardar.setEnabled(true);
                 listarMedicamentos();
                 Limpiar();
 
@@ -699,6 +719,7 @@ public class medicamentos extends javax.swing.JPanel {
            if(medicamento.eliminar(idSeleccionado))
            {
                JOptionPane.showMessageDialog( null,"Medicamento eliminado");
+               btnGuardar.setEnabled(true);
                listarMedicamentos();
                Limpiar();
            }else
@@ -710,6 +731,8 @@ public class medicamentos extends javax.swing.JPanel {
 
     private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
         Limpiar();
+        txtNombre.setEditable(true);
+        btnGuardar.setEnabled(true);
         jtablaMedicamentos.clearSelection();
     }//GEN-LAST:event_btnLimpiarActionPerformed
 

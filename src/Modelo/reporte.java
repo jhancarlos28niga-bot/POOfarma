@@ -14,6 +14,7 @@ public class reporte {
     private LocalDate fecha;
     private String cliente;
     private String medicamento;
+    private String categoria;
     private int cantidad;
     private double precio;
     private double subtotal;
@@ -21,10 +22,11 @@ public class reporte {
     public reporte() {
     }
 
-    public reporte(LocalDate fecha, String cliente, String medicamento, int cantidad, double precio, double subtotal) {
+    public reporte(LocalDate fecha, String cliente, String medicamento, String categoria, int cantidad, double precio, double subtotal) {
         this.fecha = fecha;
         this.cliente = cliente;
         this.medicamento = medicamento;
+        this.categoria = categoria;
         this.cantidad = cantidad;
         this.precio = precio;
         this.subtotal = subtotal;
@@ -54,6 +56,14 @@ public class reporte {
         this.medicamento = medicamento;
     }
 
+    public String getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(String categoria) {
+        this.categoria = categoria;
+    }
+
     public int getCantidad() {
         return cantidad;
     }
@@ -77,6 +87,8 @@ public class reporte {
     public void setSubtotal(double subtotal) {
         this.subtotal = subtotal;
     }
+
+    
     
 
 }

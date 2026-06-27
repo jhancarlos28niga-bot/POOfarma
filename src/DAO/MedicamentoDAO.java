@@ -301,5 +301,28 @@ public class MedicamentoDAO {
 
         return lista;
     }
+    public boolean existeMedicamento(String nombre, String categoria) 
+    {
+        String sql = "SELECT COUNT(*) FROM Medicamentos WHERE Nombre = ? AND Categoria = ? AND Estado = 1";
+
+        try {
+            Connection con = cn.conectar();
+            PreparedStatement ps = con.prepareStatement(sql);
+
+            ps.setString(1, nombre);
+            ps.setString(2, categoria);
+
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error al verificar medicamento: " + e.getMessage());
+        }
+
+        return false;
+    }
 }
 

@@ -41,6 +41,7 @@ public class ventas extends javax.swing.JPanel {
     private String nombreMedicamentoSeleccionado = "";
     private double precioSeleccionado = 0;
     private int stockSeleccionado = 0;
+    private String categoria ="";
     private double totalGeneral = 0;
     private int idClienteSeleccionado = 0;
     public ventas() {
@@ -52,6 +53,7 @@ public class ventas extends javax.swing.JPanel {
         tablaVenta.getColumnModel().getColumn(0).setWidth(0);
         DefaultTableModel modelo =(DefaultTableModel) tablaVenta.getModel();
         modelo.setRowCount(0);
+        
         personalizarTablaMedicamento();
         personalizarTablaVenta();
     }
@@ -73,6 +75,7 @@ public class ventas extends javax.swing.JPanel {
 
                 med.getIdMedicamento(),
                 med.getNombre(),
+                med.getCategoria(),
                 med.getStock(),
                 med.getPrecio()
             };
@@ -216,13 +219,13 @@ public class ventas extends javax.swing.JPanel {
 
         jtablaMedicamentos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "ID", "Nombre", "Stock", "Precio"
+                "ID", "Nombre", "Categoría", "Stock", "Precio"
             }
         ));
         jtablaMedicamentos.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -252,13 +255,13 @@ public class ventas extends javax.swing.JPanel {
 
         tablaVenta.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "ID_Medicamento", "Nombre", "Cantidad", "Precio", "SubTotal"
+                "ID_Medicamento", "Nombre", "Categoría", "Cantidad", "Precio", "SubTotal"
             }
         ));
         jScrollPane2.setViewportView(tablaVenta);
@@ -357,8 +360,8 @@ public class ventas extends javax.swing.JPanel {
                                     .addComponent(btnCancelarVenta)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(btnRegistrarVenta))
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 474, Short.MAX_VALUE))
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 474, Short.MAX_VALUE)
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(159, 159, 159)
                                 .addComponent(jLabel2)))
@@ -474,6 +477,7 @@ public class ventas extends javax.swing.JPanel {
         {
             med.getIdMedicamento(),
             med.getNombre(),
+            med.getCategoria(),
             med.getStock(),
             med.getPrecio()
         });
@@ -492,10 +496,12 @@ public class ventas extends javax.swing.JPanel {
         idMedicamentoSeleccionado = Integer.parseInt(jtablaMedicamentos.getValueAt(fila,0).toString());
 
         nombreMedicamentoSeleccionado = jtablaMedicamentos.getValueAt(fila,1).toString();
+        
+        categoria = jtablaMedicamentos.getValueAt(fila,2).toString();
 
-        stockSeleccionado =  Integer.parseInt(jtablaMedicamentos.getValueAt(fila,2).toString());
+        stockSeleccionado =  Integer.parseInt(jtablaMedicamentos.getValueAt(fila,3).toString());
 
-        precioSeleccionado =Double.parseDouble( jtablaMedicamentos.getValueAt(fila,3).toString());
+        precioSeleccionado =Double.parseDouble( jtablaMedicamentos.getValueAt(fila,4).toString());
     }
         // TODO add your handling code here:
     }//GEN-LAST:event_jtablaMedicamentosMouseClicked
@@ -508,7 +514,6 @@ public class ventas extends javax.swing.JPanel {
          JOptionPane.showMessageDialog( null, "Seleccione un medicamento");
          return;
       }
-
       if(txtCantidad.getText().trim().isEmpty())
       {
          JOptionPane.showMessageDialog(null,"Ingrese la cantidad");
@@ -533,12 +538,19 @@ public class ventas extends javax.swing.JPanel {
 
       DefaultTableModel modelo =(DefaultTableModel)
       tablaVenta.getModel();
-      modelo.addRow(new Object[]{idMedicamentoSeleccionado,nombreMedicamentoSeleccionado,cantidad, precioSeleccionado,subtotal});
+      modelo.addRow(new Object[]{idMedicamentoSeleccionado,nombreMedicamentoSeleccionado,categoria,cantidad,precioSeleccionado,subtotal});
+       jtablaMedicamentos.clearSelection();
+       idMedicamentoSeleccionado = 0;
+       nombreMedicamentoSeleccionado = "";
+       categoria = "";
+       stockSeleccionado = 0;
+       precioSeleccionado = 0;
 
       totalGeneral += subtotal;
 
       lblTotal.setText( "S/. " + String.format("%.2f", totalGeneral));
       txtCantidad.setText("");  
+      
      }catch(Exception e)
      {
          JOptionPane.showMessageDialog(null,"Error al Agregar producto: "+ e.getMessage());
@@ -567,6 +579,9 @@ public class ventas extends javax.swing.JPanel {
          modelo.setRowCount(0);
          totalGeneral = 0;
          lblTotal.setText("S/. 0.00");
+         txtDNIbuscar.setText("");
+         txtNombreCliente.setText("");
+         jtablaMedicamentos.clearSelection();
         // TODO add your handling code here:
     }//GEN-LAST:event_btnCancelarVentaActionPerformed
 
@@ -597,15 +612,16 @@ public class ventas extends javax.swing.JPanel {
             DetalleVentasDAO daoDetalle = new DetalleVentasDAO();
             DefaultTableModel modelo =(DefaultTableModel)tablaVenta.getModel();
             for(int i = 0;i < modelo.getRowCount(); i++)
-            {
+            {    
+                 MedicamentoDAO daoMedicamento = new MedicamentoDAO();
                  DetalleVenta det = new DetalleVenta();
                  det.setIdVenta(idVentaGenerada);
                  det.setIdMedicamento(Integer.parseInt( modelo.getValueAt(i,0) .toString()));
-                 det.setCantidad( Integer.parseInt( modelo.getValueAt(i,2).toString()));
-                 det.setPrecioUnitario( Double.parseDouble(modelo.getValueAt(i,3).toString()));
-                 det.setSubtotal(Double.parseDouble( modelo.getValueAt(i,4).toString()));
+                 det.setCantidad( Integer.parseInt( modelo.getValueAt(i,3).toString()));
+                 det.setPrecioUnitario( Double.parseDouble(modelo.getValueAt(i,4).toString()));
+                 det.setSubtotal(Double.parseDouble( modelo.getValueAt(i,5).toString()));
                  daoDetalle.guardar(det);
-                 MedicamentoDAO daoMedicamento = new MedicamentoDAO();
+                
                  daoMedicamento.descontarStock(det.getIdMedicamento(),det.getCantidad());
                  MovimientoInventario mov = new MovimientoInventario();
                  mov.setIdMedicamento(det.getIdMedicamento());
@@ -624,9 +640,9 @@ public class ventas extends javax.swing.JPanel {
              txtCantidad.setText("");
              ListarMedicamentos();
              idClienteSeleccionado = 0;
-            txtDNIbuscar.setText("");
-            txtNombreCliente.setText("");
-            idMedicamentoSeleccionado = 0;
+             txtDNIbuscar.setText("");
+             txtNombreCliente.setText("");
+             idMedicamentoSeleccionado = 0;
             
         }catch(Exception e)
         {

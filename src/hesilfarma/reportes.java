@@ -15,7 +15,6 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import java.awt.Color;
 import java.awt.Desktop;
-import java.awt.Font;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.time.LocalDate;
@@ -26,6 +25,11 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.pdf.PdfPCell;
 
 /**
  *
@@ -39,10 +43,12 @@ public class reportes extends javax.swing.JPanel {
     public reportes() {
         
         initComponents();
-        cargarEstadisticas();
         personalizarTabla();
         ((JTextField) fechaInicio.getDateEditor().getUiComponent()).setEditable(false);
         ((JTextField) fechaFin.getDateEditor().getUiComponent()).setEditable(false);
+        DefaultTableModel modelo = (DefaultTableModel) tablaReportes.getModel();
+        modelo.setRowCount(0);
+        limpiarEstadisticas();
        
     }
     private void cargarEstadisticas()
@@ -56,6 +62,13 @@ public class reportes extends javax.swing.JPanel {
         lblNumeroVentas.setText(String.valueOf(dao.numeroVentas()));
 
         txtmedicamento.setText(dao.medicamentoMasVendido());
+    }
+    private void limpiarEstadisticas()
+    {
+        lblTotalVentas.setText("S/. 0.00");
+        lblProductosVendidos.setText("0");
+        lblNumeroVentas.setText("0");
+        txtmedicamento.setText("-");
     }
     private void personalizarTabla()
     {
@@ -72,7 +85,6 @@ public class reportes extends javax.swing.JPanel {
 
                     lbl.setForeground(Color.WHITE);
 
-                    lbl.setFont(new Font("Segoe UI",Font.BOLD,13));
 
                     lbl.setHorizontalAlignment(SwingConstants.CENTER);
 
@@ -83,8 +95,6 @@ public class reportes extends javax.swing.JPanel {
             });
 
         tablaReportes.setRowHeight(28);
-
-        tablaReportes.setFont( new Font("Segoe UI",Font.PLAIN,12));
 
         tablaReportes.setSelectionBackground(new Color(52,152,219));
 
@@ -131,16 +141,19 @@ public class reportes extends javax.swing.JPanel {
 
         tablaReportes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "Fecha", "Cliente", "Medicamento", "Cantidad", "Precio", "Subtotal"
+                "Fecha", "Cliente", "Medicamento", "Categoría", "Cantidad", "PrecioUnitario", "Subtotal"
             }
         ));
         jScrollPane1.setViewportView(tablaReportes);
+        if (tablaReportes.getColumnModel().getColumnCount() > 0) {
+            tablaReportes.getColumnModel().getColumn(3).setResizable(false);
+        }
 
         jLabel1.setBackground(new java.awt.Color(32, 72, 140));
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
@@ -207,7 +220,7 @@ public class reportes extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                 .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                                     .addComponent(jLabel2)
@@ -217,7 +230,6 @@ public class reportes extends javax.swing.JPanel {
                                     .addComponent(jLabel1)
                                     .addGap(18, 18, 18)
                                     .addComponent(fechaInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 516, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                 .addComponent(jLabel9)
                                 .addGroup(jPanel1Layout.createSequentialGroup()
@@ -228,8 +240,9 @@ public class reportes extends javax.swing.JPanel {
                                     .addComponent(btnExportarPdf)))
                             .addComponent(jLabel5)
                             .addComponent(lblProductosVendidos)
-                            .addComponent(lblNumeroVentas))
-                        .addContainerGap(21, Short.MAX_VALUE))
+                            .addComponent(lblNumeroVentas)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 562, Short.MAX_VALUE))
+                        .addGap(27, 27, 27))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -303,7 +316,6 @@ public class reportes extends javax.swing.JPanel {
         DefaultTableModel modelo =(DefaultTableModel)tablaReportes.getModel();
         modelo.setRowCount(0);
         reportesDAO dao = new reportesDAO();
-
         List<reporte> lista = dao.listarVentas();
           for (reporte rep : lista)
           {
@@ -312,6 +324,7 @@ public class reportes extends javax.swing.JPanel {
                   rep.getFecha(),
                   rep.getCliente(),
                   rep.getMedicamento(),
+                  rep.getCategoria(),
                   rep.getCantidad(),
                   rep.getPrecio(),
                   rep.getSubtotal()
@@ -355,7 +368,10 @@ public class reportes extends javax.swing.JPanel {
             modelo.setRowCount(0);
             if(lista.isEmpty())
             {
-                JOptionPane.showMessageDialog(null,"No existen ventas en ese rango de fechas");
+                modelo.setRowCount(0);
+                limpiarEstadisticas();
+                JOptionPane.showMessageDialog(null,"No existen ventas en ese rango de fechas.");
+                return;
             }
 
             for(reporte rep : lista)
@@ -365,6 +381,7 @@ public class reportes extends javax.swing.JPanel {
                     rep.getFecha(),
                     rep.getCliente(),
                     rep.getMedicamento(),
+                    rep.getCategoria(),
                     rep.getCantidad(),
                     rep.getPrecio(),
                     rep.getSubtotal()
@@ -377,6 +394,8 @@ public class reportes extends javax.swing.JPanel {
             lblNumeroVentas.setText(String.valueOf(dao.numeroVentasPorFecha(inicio,fin)));
 
             txtmedicamento.setText(dao.medicamentoMasVendidoPorFecha(inicio,fin));
+            fechaInicio.setDate(null);
+            fechaFin.setDate(null);
        }catch(Exception e)
        {
            JOptionPane.showMessageDialog(null,"Error al generar reporte: "+ e.getMessage());
@@ -386,6 +405,12 @@ public class reportes extends javax.swing.JPanel {
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void btnExportarPdfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportarPdfActionPerformed
+        DefaultTableModel modelo = (DefaultTableModel) tablaReportes.getModel();
+
+        if (modelo.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(this,"Primero debe mostrar o buscar los reportes antes de exportar el PDF.","Sin datos",JOptionPane.WARNING_MESSAGE);
+            return;
+        }
         try
         {
             JFileChooser chooser = new JFileChooser();
@@ -405,37 +430,83 @@ public class reportes extends javax.swing.JPanel {
 
             documento.open();
 
-            documento.add(new Paragraph("REPORTE DE VENTAS"));
+            Font titulo = new Font(Font.FontFamily.HELVETICA,18,Font.BOLD,BaseColor.BLUE);
+            Paragraph encabezado = new Paragraph("REPORTE DE VENTAS",titulo);
+            encabezado.setAlignment(Element.ALIGN_CENTER);
+
+            documento.add(encabezado);
             documento.add(new Paragraph(" "));
-            documento.add(new Paragraph("Fecha: " + LocalDate.now()));
+
+            Paragraph fecha = new Paragraph("Fecha de generación: " + LocalDate.now());
+            fecha.setAlignment(Element.ALIGN_RIGHT);
+
+            documento.add(fecha);
             documento.add(new Paragraph(" "));
 
-            PdfPTable tabla = new PdfPTable(6);
+            PdfPTable tabla = new PdfPTable(7);
+            tabla.setWidthPercentage(100);
+            tabla.setSpacingBefore(10f);
+            tabla.setSpacingAfter(10f);
 
-            tabla.addCell("Fecha");
-            tabla.addCell("Cliente");
-            tabla.addCell("Medicamento");
-            tabla.addCell("Cantidad");
-            tabla.addCell("Precio");
-            tabla.addCell("Subtotal");
+            PdfPCell celda;
 
+            celda = new PdfPCell(new Phrase("Fecha"));
+            celda.setBackgroundColor(BaseColor.LIGHT_GRAY);
+            celda.setHorizontalAlignment(Element.ALIGN_CENTER);
+            tabla.addCell(celda);
+
+            celda = new PdfPCell(new Phrase("Cliente"));
+            celda.setBackgroundColor(BaseColor.LIGHT_GRAY);
+            celda.setHorizontalAlignment(Element.ALIGN_CENTER);
+            tabla.addCell(celda);
+
+            celda = new PdfPCell(new Phrase("Medicamento"));
+            celda.setBackgroundColor(BaseColor.LIGHT_GRAY);
+            celda.setHorizontalAlignment(Element.ALIGN_CENTER);
+            tabla.addCell(celda);
+
+            celda = new PdfPCell(new Phrase("Categoría"));
+            celda.setBackgroundColor(BaseColor.LIGHT_GRAY);
+            celda.setHorizontalAlignment(Element.ALIGN_CENTER);
+            tabla.addCell(celda);
+
+            celda = new PdfPCell(new Phrase("Cantidad"));
+            celda.setBackgroundColor(BaseColor.LIGHT_GRAY);
+            celda.setHorizontalAlignment(Element.ALIGN_CENTER);
+            tabla.addCell(celda);
+
+            celda = new PdfPCell(new Phrase("Precio"));
+            celda.setBackgroundColor(BaseColor.LIGHT_GRAY);
+            celda.setHorizontalAlignment(Element.ALIGN_CENTER);
+            tabla.addCell(celda);
+
+            celda = new PdfPCell(new Phrase("Subtotal"));
+            celda.setBackgroundColor(BaseColor.LIGHT_GRAY);
+            celda.setHorizontalAlignment(Element.ALIGN_CENTER);
+            tabla.addCell(celda);
+            
             for(int i = 0; i < tablaReportes.getRowCount(); i++)
             {
-                tabla.addCell(tablaReportes.getValueAt(i,0).toString());
-                tabla.addCell(tablaReportes.getValueAt(i,1).toString());
-                tabla.addCell(tablaReportes.getValueAt(i,2).toString());
-                tabla.addCell(tablaReportes.getValueAt(i,3).toString());
-                tabla.addCell(tablaReportes.getValueAt(i,4).toString());
-                tabla.addCell(tablaReportes.getValueAt(i,5).toString());
+                
+                for(int j = 0; j < 7; j++)
+                {
+                    PdfPCell dato = new PdfPCell(new Phrase(tablaReportes.getValueAt(i,j).toString()));
+                    dato.setHorizontalAlignment(Element.ALIGN_CENTER);
+                    tabla.addCell(dato);
+                }
             }
 
             documento.add(tabla);
 
             documento.add(new Paragraph(" "));
-            documento.add(new Paragraph("Total Ventas: " + lblTotalVentas.getText()));
-            documento.add(new Paragraph("Productos Vendidos: " + lblProductosVendidos.getText()));
-            documento.add(new Paragraph("Numero de Ventas: " + lblNumeroVentas.getText()));
-            documento.add(new Paragraph("Medicamento mas vendido: " + txtmedicamento.getText()));
+            documento.add(new Paragraph("=============================================="));
+
+            Font negrita = new Font(Font.FontFamily.HELVETICA,12,Font.BOLD);
+
+            documento.add(new Paragraph("Total de Ventas: " + lblTotalVentas.getText(),negrita));
+            documento.add(new Paragraph("Productos Vendidos: " + lblProductosVendidos.getText(),negrita));
+            documento.add(new Paragraph("Número de Ventas: " + lblNumeroVentas.getText(),negrita));
+            documento.add(new Paragraph("Medicamento Más Vendido: " + txtmedicamento.getText(),negrita));
 
             documento.close();
 

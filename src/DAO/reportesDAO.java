@@ -30,6 +30,7 @@ public class reportesDAO {
                 + "V.FechaVenta, "
                 + "C.Nombre AS Cliente, "
                 + "M.Nombre AS Medicamento, "
+                + "M.Categoria AS Categoria, "
                 + "D.Cantidad, "
                 + "D.Precio_Unitario, "
                 + "D.Subtotal "
@@ -57,6 +58,8 @@ public class reportesDAO {
                 rep.setCliente(rs.getString("Cliente"));
 
                 rep.setMedicamento(rs.getString("Medicamento"));
+                
+                rep.setCategoria(rs.getString("Categoria"));
 
                 rep.setCantidad(rs.getInt("Cantidad"));
 
@@ -191,6 +194,7 @@ public class reportesDAO {
                 + "V.FechaVenta, "
                 + "C.Nombre AS Cliente, "
                 + "M.Nombre AS Medicamento, "
+                + "M.Categoria AS Categoria, "
                 + "D.Cantidad, "
                 + "D.Precio_Unitario, "
                 + "D.Subtotal "
@@ -224,6 +228,8 @@ public class reportesDAO {
                 rep.setCliente(rs.getString("Cliente"));
 
                 rep.setMedicamento(rs.getString("Medicamento"));
+                
+                rep.setCategoria(rs.getString("Categoria"));
 
                 rep.setCantidad(rs.getInt("Cantidad"));
 
@@ -246,10 +252,16 @@ public class reportesDAO {
         double total = 0;
 
         String sql =
-                "SELECT SUM(Total) AS Total "
-                + "FROM Ventas "
-                + "WHERE FechaVenta "
-                + "BETWEEN ? AND ?";
+                "SELECT SUM(T.Total) AS Total "
+                +"FROM"
+                + "("
+                + "SELECT DISTINCT V.ID_Venta, V.Total "
+                + "FROM Ventas v "
+                + "INNER JOIN DetalleVentas D "
+                + "ON V.ID_Venta = D.ID_Venta "
+                + "WHERE V.FechaVenta BETWEEN ? AND ? "
+                + ")T ";
+                
 
         try
         {
@@ -314,9 +326,11 @@ public class reportesDAO {
         int total = 0;
 
         String sql =
-                "SELECT COUNT(*) AS Total "
-                + "FROM Ventas "
-                + "WHERE FechaVenta "
+                "SELECT COUNT(DISTINCT V.ID_Venta) AS Total "
+                + "FROM Ventas V "
+                + "INNER JOIN DetalleVentas D "
+                + "ON V.ID_Venta = D.ID_Venta "
+                + "WHERE V.FechaVenta "
                 + "BETWEEN ? AND ?";
 
         try
