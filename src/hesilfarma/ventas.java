@@ -566,7 +566,7 @@ public class ventas extends javax.swing.JPanel {
             JOptionPane.showMessageDialog( null,"Seleccione un producto");
             return;
         }
-        double subtotal =Double.parseDouble(tablaVenta.getValueAt(fila,4).toString());
+        double subtotal = Double.parseDouble(tablaVenta.getValueAt(fila,5).toString());
         totalGeneral -= subtotal;
         DefaultTableModel modelo =(DefaultTableModel)tablaVenta.getModel();
          modelo.removeRow(fila);

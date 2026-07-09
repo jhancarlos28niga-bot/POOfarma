@@ -20,17 +20,17 @@ import java.sql.Connection;
  */
 public class reportesDAO {
     Conexion cn = new Conexion();
-    public List<reporte> listarVentas()
-    {
+        public List<reporte> listarVentas()
+        {
 
-        List<reporte> lista = new ArrayList<>();
+            List<reporte> lista = new ArrayList<>();
 
-        String sql =
+            String sql =
                 "SELECT "
                 + "V.FechaVenta, "
                 + "C.Nombre AS Cliente, "
                 + "M.Nombre AS Medicamento, "
-                + "M.Categoria AS Categoria, "
+                + "CA.Nombre AS Categoria, "
                 + "D.Cantidad, "
                 + "D.Precio_Unitario, "
                 + "D.Subtotal "
@@ -40,161 +40,163 @@ public class reportesDAO {
                 + "INNER JOIN DetalleVentas D "
                 + "ON V.ID_Venta = D.ID_Venta "
                 + "INNER JOIN Medicamentos M "
-                + "ON D.ID_Medicamento = M.ID_Medicamento";
-        try
-        {
-            Connection con = cn.conectar();
-
-            PreparedStatement ps =con.prepareStatement(sql);
-
-            ResultSet rs = ps.executeQuery();
-
-            while (rs.next()) {
-
-                reporte rep = new reporte();
-
-                rep.setFecha(rs.getDate("FechaVenta").toLocalDate());
-
-                rep.setCliente(rs.getString("Cliente"));
-
-                rep.setMedicamento(rs.getString("Medicamento"));
-                
-                rep.setCategoria(rs.getString("Categoria"));
-
-                rep.setCantidad(rs.getInt("Cantidad"));
-
-                rep.setPrecio(rs.getDouble("Precio_Unitario"));
-
-                rep.setSubtotal(rs.getDouble("Subtotal"));
-
-                lista.add(rep);
-            }
-        }catch(SQLException e) 
-        {
-            JOptionPane.showMessageDialog(null,"Error Reporte: "+ e.getMessage());
-        }
-        return lista;
-    }
-    public double totalVentas()
-    {
-        double total = 0;
-
-        String sql ="SELECT SUM(Total) AS Total "+ "FROM Ventas";
-         try
-         {
-            Connection con = cn.conectar();
-
-            PreparedStatement ps =con.prepareStatement(sql);
-
-            ResultSet rs = ps.executeQuery();
-
-            if(rs.next())
+                + "ON D.ID_Medicamento = M.ID_Medicamento "
+                + "INNER JOIN Categorias CA "
+                + "ON M.ID_Categoria = CA.ID_Categoria";
+            try
             {
-             total = rs.getDouble("Total");
-            }
+                Connection con = cn.conectar();
 
-         }catch(SQLException e)
-          {
+                PreparedStatement ps =con.prepareStatement(sql);
+
+                ResultSet rs = ps.executeQuery();
+
+                while (rs.next()) {
+
+                    reporte rep = new reporte();
+
+                    rep.setFecha(rs.getDate("FechaVenta").toLocalDate());
+
+                    rep.setCliente(rs.getString("Cliente"));
+
+                    rep.setMedicamento(rs.getString("Medicamento"));
+
+                    rep.setCategoria(rs.getString("Categoria"));
+
+                    rep.setCantidad(rs.getInt("Cantidad"));
+
+                    rep.setPrecio(rs.getDouble("Precio_Unitario"));
+
+                    rep.setSubtotal(rs.getDouble("Subtotal"));
+
+                    lista.add(rep);
+                }
+            }catch(SQLException e) 
+            {
+                JOptionPane.showMessageDialog(null,"Error Reporte: "+ e.getMessage());
+            }
+            return lista;
+        }
+        public double totalVentas()
+        {
+            double total = 0;
+
+            String sql ="SELECT SUM(Total) AS Total "+ "FROM Ventas";
+             try
+             {
+                Connection con = cn.conectar();
+
+                PreparedStatement ps =con.prepareStatement(sql);
+
+                ResultSet rs = ps.executeQuery();
+
+                if(rs.next())
+                {
+                 total = rs.getDouble("Total");
+                }
+
+             }catch(SQLException e)
+              {
+                    JOptionPane.showMessageDialog(null,e.getMessage());
+              }
+              return total;
+        }
+        public int productosVendidos()
+        {
+            int total = 0;
+            String sql ="SELECT SUM(Cantidad) AS Total "+ "FROM DetalleVentas";
+
+            try
+            {
+                Connection con = cn.conectar();
+
+                PreparedStatement ps =con.prepareStatement(sql);
+
+                ResultSet rs = ps.executeQuery();
+
+                if(rs.next())
+                {
+                    total =rs.getInt("Total");
+                }
+
+            }catch(SQLException e)
+            {
                 JOptionPane.showMessageDialog(null,e.getMessage());
-          }
-          return total;
-    }
-    public int productosVendidos()
-    {
-        int total = 0;
-        String sql ="SELECT SUM(Cantidad) AS Total "+ "FROM DetalleVentas";
-
-        try
-        {
-            Connection con = cn.conectar();
-
-            PreparedStatement ps =con.prepareStatement(sql);
-
-            ResultSet rs = ps.executeQuery();
-
-            if(rs.next())
-            {
-                total =rs.getInt("Total");
             }
 
-        }catch(SQLException e)
-        {
-            JOptionPane.showMessageDialog(null,e.getMessage());
+            return total;
         }
-
-        return total;
-    }
-    public int numeroVentas()
-    {
-        int total = 0;
-
-        String sql =
-                "SELECT COUNT(*) AS Total "
-                + "FROM Ventas";
-
-        try
+        public int numeroVentas()
         {
-            Connection con = cn.conectar();
+            int total = 0;
 
-            PreparedStatement ps = con.prepareStatement(sql);
+            String sql =
+                    "SELECT COUNT(*) AS Total "
+                    + "FROM Ventas";
 
-            ResultSet rs = ps.executeQuery();
-
-            if(rs.next())
+            try
             {
-                total =rs.getInt("Total");
+                Connection con = cn.conectar();
+
+                PreparedStatement ps = con.prepareStatement(sql);
+
+                ResultSet rs = ps.executeQuery();
+
+                if(rs.next())
+                {
+                    total =rs.getInt("Total");
+                }
+
+            }catch(SQLException e)
+            {
+                JOptionPane.showMessageDialog(null,e.getMessage());
             }
 
-        }catch(SQLException e)
-        {
-            JOptionPane.showMessageDialog(null,e.getMessage());
+            return total;
         }
-
-        return total;
-    }
-    public String medicamentoMasVendido()
-    {
-        String nombre = "-";
-
-        String sql =
-                "SELECT TOP 1 "
-                + "M.Nombre "
-                + "FROM DetalleVentas D "
-                + "INNER JOIN Medicamentos M "
-                + "ON D.ID_Medicamento = M.ID_Medicamento "
-                + "GROUP BY M.Nombre "
-                + "ORDER BY SUM(D.Cantidad) DESC";
-
-        try
+        public String medicamentoMasVendido()
         {
-            Connection con = cn.conectar();
+            String nombre = "-";
 
-            PreparedStatement ps = con.prepareStatement(sql);
+            String sql =
+                    "SELECT TOP 1 "
+                    + "M.Nombre "
+                    + "FROM DetalleVentas D "
+                    + "INNER JOIN Medicamentos M "
+                    + "ON D.ID_Medicamento = M.ID_Medicamento "
+                    + "GROUP BY M.Nombre "
+                    + "ORDER BY SUM(D.Cantidad) DESC";
 
-            ResultSet rs = ps.executeQuery();
-
-            if(rs.next())
+            try
             {
-                nombre = rs.getString("Nombre");
+                Connection con = cn.conectar();
+
+                PreparedStatement ps = con.prepareStatement(sql);
+
+                ResultSet rs = ps.executeQuery();
+
+                if(rs.next())
+                {
+                    nombre = rs.getString("Nombre");
+                }
+
+            }catch(SQLException e)
+            {
+                JOptionPane.showMessageDialog(null,e.getMessage());
             }
 
-        }catch(SQLException e)
-        {
-            JOptionPane.showMessageDialog(null,e.getMessage());
+            return nombre;
         }
+        public List<reporte> buscarPorFechas(java.sql.Date inicio,java.sql.Date fin)
+        {
+            List<reporte> lista =new ArrayList<>();
 
-        return nombre;
-    }
-    public List<reporte> buscarPorFechas(java.sql.Date inicio,java.sql.Date fin)
-    {
-        List<reporte> lista =new ArrayList<>();
-
-        String sql =
+            String sql =
                 "SELECT "
                 + "V.FechaVenta, "
                 + "C.Nombre AS Cliente, "
                 + "M.Nombre AS Medicamento, "
-                + "M.Categoria AS Categoria, "
+                + "CA.Nombre AS Categoria, "
                 + "D.Cantidad, "
                 + "D.Precio_Unitario, "
                 + "D.Subtotal "
@@ -205,195 +207,197 @@ public class reportesDAO {
                 + "ON V.ID_Venta = D.ID_Venta "
                 + "INNER JOIN Medicamentos M "
                 + "ON D.ID_Medicamento = M.ID_Medicamento "
+                + "INNER JOIN Categorias CA "
+                + "ON M.ID_Categoria = CA.ID_Categoria "
                 + "WHERE V.FechaVenta "
                 + "BETWEEN ? AND ?";
 
-        try
-        {
-            Connection con =cn.conectar();
-
-            PreparedStatement ps =con.prepareStatement(sql);
-
-            ps.setDate(1, inicio);
-            ps.setDate(2, fin);
-
-            ResultSet rs =ps.executeQuery();
-
-            while(rs.next())
+            try
             {
-                reporte rep =new reporte();
+                Connection con =cn.conectar();
 
-                rep.setFecha(rs.getDate("FechaVenta").toLocalDate());
+                PreparedStatement ps =con.prepareStatement(sql);
 
-                rep.setCliente(rs.getString("Cliente"));
+                ps.setDate(1, inicio);
+                ps.setDate(2, fin);
 
-                rep.setMedicamento(rs.getString("Medicamento"));
-                
-                rep.setCategoria(rs.getString("Categoria"));
+                ResultSet rs =ps.executeQuery();
 
-                rep.setCantidad(rs.getInt("Cantidad"));
+                while(rs.next())
+                {
+                    reporte rep =new reporte();
 
-                rep.setPrecio(rs.getDouble("Precio_Unitario"));
+                    rep.setFecha(rs.getDate("FechaVenta").toLocalDate());
 
-                rep.setSubtotal(rs.getDouble("Subtotal"));
+                    rep.setCliente(rs.getString("Cliente"));
 
-                lista.add(rep);
+                    rep.setMedicamento(rs.getString("Medicamento"));
+
+                    rep.setCategoria(rs.getString("Categoria"));
+
+                    rep.setCantidad(rs.getInt("Cantidad"));
+
+                    rep.setPrecio(rs.getDouble("Precio_Unitario"));
+
+                    rep.setSubtotal(rs.getDouble("Subtotal"));
+
+                    lista.add(rep);
+                }
+
+            }catch(SQLException e)
+            {
+                JOptionPane.showMessageDialog(null,e.getMessage());
             }
 
-        }catch(SQLException e)
-        {
-            JOptionPane.showMessageDialog(null,e.getMessage());
+            return lista;
         }
-
-        return lista;
-    }
-    public double totalVentasPorFecha(java.sql.Date inicio,java.sql.Date fin)
-    {
-        double total = 0;
-
-        String sql =
-                "SELECT SUM(T.Total) AS Total "
-                +"FROM"
-                + "("
-                + "SELECT DISTINCT V.ID_Venta, V.Total "
-                + "FROM Ventas v "
-                + "INNER JOIN DetalleVentas D "
-                + "ON V.ID_Venta = D.ID_Venta "
-                + "WHERE V.FechaVenta BETWEEN ? AND ? "
-                + ")T ";
-                
-
-        try
+        public double totalVentasPorFecha(java.sql.Date inicio,java.sql.Date fin)
         {
-            Connection con = cn.conectar();
+            double total = 0;
 
-            PreparedStatement ps =con.prepareStatement(sql);
+            String sql =
+                    "SELECT SUM(T.Total) AS Total "
+                    +"FROM"
+                    + "("
+                    + "SELECT DISTINCT V.ID_Venta, V.Total "
+                    + "FROM Ventas v "
+                    + "INNER JOIN DetalleVentas D "
+                    + "ON V.ID_Venta = D.ID_Venta "
+                    + "WHERE V.FechaVenta BETWEEN ? AND ? "
+                    + ")T ";
 
-            ps.setDate(1, inicio);
-            ps.setDate(2, fin);
 
-            ResultSet rs = ps.executeQuery();
-
-            if(rs.next())
+            try
             {
-                total = rs.getDouble("Total");
+                Connection con = cn.conectar();
+
+                PreparedStatement ps =con.prepareStatement(sql);
+
+                ps.setDate(1, inicio);
+                ps.setDate(2, fin);
+
+                ResultSet rs = ps.executeQuery();
+
+                if(rs.next())
+                {
+                    total = rs.getDouble("Total");
+                }
+
+            }catch(SQLException e)
+            {
+                JOptionPane.showMessageDialog(null,e.getMessage());
             }
 
-        }catch(SQLException e)
-        {
-            JOptionPane.showMessageDialog(null,e.getMessage());
+            return total;
         }
-
-        return total;
-    }
-    public int productosVendidosPorFecha(java.sql.Date inicio,java.sql.Date fin)
-    {
-        int total = 0;
-
-        String sql =
-                "SELECT SUM(D.Cantidad) AS Total "
-                + "FROM DetalleVentas D "
-                + "INNER JOIN Ventas V "
-                + "ON D.ID_Venta = V.ID_Venta "
-                + "WHERE V.FechaVenta "
-                + "BETWEEN ? AND ?";
-
-        try
+        public int productosVendidosPorFecha(java.sql.Date inicio,java.sql.Date fin)
         {
-            Connection con = cn.conectar();
+            int total = 0;
 
-            PreparedStatement ps =con.prepareStatement(sql);
+            String sql =
+                    "SELECT SUM(D.Cantidad) AS Total "
+                    + "FROM DetalleVentas D "
+                    + "INNER JOIN Ventas V "
+                    + "ON D.ID_Venta = V.ID_Venta "
+                    + "WHERE V.FechaVenta "
+                    + "BETWEEN ? AND ?";
 
-            ps.setDate(1, inicio);
-            ps.setDate(2, fin);
-
-            ResultSet rs = ps.executeQuery();
-
-            if(rs.next())
+            try
             {
-                total = rs.getInt("Total");
+                Connection con = cn.conectar();
+
+                PreparedStatement ps =con.prepareStatement(sql);
+
+                ps.setDate(1, inicio);
+                ps.setDate(2, fin);
+
+                ResultSet rs = ps.executeQuery();
+
+                if(rs.next())
+                {
+                    total = rs.getInt("Total");
+                }
+
+            }catch(SQLException e)
+            {
+                JOptionPane.showMessageDialog(null,e.getMessage());
             }
 
-        }catch(SQLException e)
-        {
-            JOptionPane.showMessageDialog(null,e.getMessage());
+            return total;
         }
-
-        return total;
-    }
-    public int numeroVentasPorFecha(java.sql.Date inicio,java.sql.Date fin)
-    {
-        int total = 0;
-
-        String sql =
-                "SELECT COUNT(DISTINCT V.ID_Venta) AS Total "
-                + "FROM Ventas V "
-                + "INNER JOIN DetalleVentas D "
-                + "ON V.ID_Venta = D.ID_Venta "
-                + "WHERE V.FechaVenta "
-                + "BETWEEN ? AND ?";
-
-        try
+        public int numeroVentasPorFecha(java.sql.Date inicio,java.sql.Date fin)
         {
-            Connection con = cn.conectar();
+            int total = 0;
 
-            PreparedStatement ps =con.prepareStatement(sql);
+            String sql =
+                    "SELECT COUNT(DISTINCT V.ID_Venta) AS Total "
+                    + "FROM Ventas V "
+                    + "INNER JOIN DetalleVentas D "
+                    + "ON V.ID_Venta = D.ID_Venta "
+                    + "WHERE V.FechaVenta "
+                    + "BETWEEN ? AND ?";
 
-            ps.setDate(1, inicio);
-            ps.setDate(2, fin);
-
-            ResultSet rs = ps.executeQuery();
-
-            if(rs.next())
+            try
             {
-                total = rs.getInt("Total");
+                Connection con = cn.conectar();
+
+                PreparedStatement ps =con.prepareStatement(sql);
+
+                ps.setDate(1, inicio);
+                ps.setDate(2, fin);
+
+                ResultSet rs = ps.executeQuery();
+
+                if(rs.next())
+                {
+                    total = rs.getInt("Total");
+                }
+
+            }catch(SQLException e)
+            {
+                JOptionPane.showMessageDialog(null,e.getMessage());
             }
 
-        }catch(SQLException e)
-        {
-            JOptionPane.showMessageDialog(null,e.getMessage());
+            return total;
         }
-
-        return total;
-    }
-    public String medicamentoMasVendidoPorFecha(java.sql.Date inicio,java.sql.Date fin)
-    {
-        String nombre = "-";
-
-        String sql =
-                "SELECT TOP 1 M.Nombre "
-                + "FROM DetalleVentas D "
-                + "INNER JOIN Medicamentos M "
-                + "ON D.ID_Medicamento = M.ID_Medicamento "
-                + "INNER JOIN Ventas V "
-                + "ON D.ID_Venta = V.ID_Venta "
-                + "WHERE V.FechaVenta "
-                + "BETWEEN ? AND ? "
-                + "GROUP BY M.Nombre "
-                + "ORDER BY SUM(D.Cantidad) DESC";
-
-        try
+        public String medicamentoMasVendidoPorFecha(java.sql.Date inicio,java.sql.Date fin)
         {
-            Connection con = cn.conectar();
+            String nombre = "-";
 
-            PreparedStatement ps =con.prepareStatement(sql);
+            String sql =
+                    "SELECT TOP 1 M.Nombre "
+                    + "FROM DetalleVentas D "
+                    + "INNER JOIN Medicamentos M "
+                    + "ON D.ID_Medicamento = M.ID_Medicamento "
+                    + "INNER JOIN Ventas V "
+                    + "ON D.ID_Venta = V.ID_Venta "
+                    + "WHERE V.FechaVenta "
+                    + "BETWEEN ? AND ? "
+                    + "GROUP BY M.Nombre "
+                    + "ORDER BY SUM(D.Cantidad) DESC";
 
-            ps.setDate(1, inicio);
-            ps.setDate(2, fin);
-
-            ResultSet rs = ps.executeQuery();
-
-            if(rs.next())
+            try
             {
-                nombre = rs.getString("Nombre");
+                Connection con = cn.conectar();
+
+                PreparedStatement ps =con.prepareStatement(sql);
+
+                ps.setDate(1, inicio);
+                ps.setDate(2, fin);
+
+                ResultSet rs = ps.executeQuery();
+
+                if(rs.next())
+                {
+                    nombre = rs.getString("Nombre");
+                }
+
+            }catch(SQLException e)
+            {
+                JOptionPane.showMessageDialog(null,e.getMessage());
             }
 
-        }catch(SQLException e)
-        {
-            JOptionPane.showMessageDialog(null,e.getMessage());
+            return nombre;
         }
 
-        return nombre;
     }
-    
-}

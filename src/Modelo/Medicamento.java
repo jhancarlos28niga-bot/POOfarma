@@ -10,6 +10,7 @@ package Modelo;
  */
 public class Medicamento {
     private int idMedicamento;
+    private int idCategoria;
     private String nombre;
     private String descripcion;
     private String categoria;
@@ -21,10 +22,10 @@ public class Medicamento {
 
     public Medicamento() {
     }
-    
-    
-    public Medicamento(int idMedicamento, String nombre, String descripcion, String categoria, int stock, double precio, String fechaVencimiento, String laboratorio, int estado) {
+
+    public Medicamento(int idMedicamento, int idCategoria, String nombre, String descripcion, String categoria, int stock, double precio, String fechaVencimiento, String laboratorio, int estado) {
         this.idMedicamento = idMedicamento;
+        this.idCategoria = idCategoria;
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.categoria = categoria;
@@ -41,6 +42,14 @@ public class Medicamento {
 
     public void setIdMedicamento(int idMedicamento) {
         this.idMedicamento = idMedicamento;
+    }
+
+    public int getIdCategoria() {
+        return idCategoria;
+    }
+
+    public void setIdCategoria(int idCategoria) {
+        this.idCategoria = idCategoria;
     }
 
     public String getNombre() {
@@ -107,6 +116,6 @@ public class Medicamento {
         this.estado = estado;
     }
 
-    
+   
     
 }

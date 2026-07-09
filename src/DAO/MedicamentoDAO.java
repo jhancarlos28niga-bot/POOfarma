@@ -19,8 +19,8 @@ public class MedicamentoDAO {
     public boolean guardar(Medicamento med) {
 
         String sql = "INSERT INTO Medicamentos "
-                + "(Nombre, Descripcion, Categoria, Stock, Precio, Fecha_Vencimiento, Laboratorio) "
-                + "VALUES (?, ?, ?, ?, ?, ?, ?)";
+        + "(Nombre, Descripcion, ID_Categoria, Stock, Precio, Fecha_Vencimiento, Laboratorio) "
+        + "VALUES (?, ?, ?, ?, ?, ?, ?)";
         try {
 
             Connection con = cn.conectar();
@@ -29,7 +29,7 @@ public class MedicamentoDAO {
 
             ps.setString(1, med.getNombre());
             ps.setString(2, med.getDescripcion());
-            ps.setString(3, med.getCategoria());
+            ps.setInt(3, med.getIdCategoria());
             ps.setInt(4, med.getStock());
             ps.setDouble(5, med.getPrecio());
             ps.setString(6, med.getFechaVencimiento());
@@ -50,8 +50,12 @@ public class MedicamentoDAO {
     {
         List<Medicamento> lista = new ArrayList<>();
 
-        String sql = "SELECT * FROM Medicamentos "
-                +"WHERE Estado = 1";
+        String sql =
+            "SELECT M.*, C.Nombre AS Categoria "
+          + "FROM Medicamentos M "
+          + "INNER JOIN Categorias C "
+          + "ON M.ID_Categoria = C.ID_Categoria "
+          + "WHERE M.Estado = 1";
 
         try {
 
@@ -70,8 +74,11 @@ public class MedicamentoDAO {
                 med.setNombre(rs.getString("Nombre"));
 
                 med.setDescripcion(rs.getString("Descripcion"));
-
+                
+                med.setIdCategoria(rs.getInt("ID_Categoria"));
+                
                 med.setCategoria(rs.getString("Categoria"));
+
 
                 med.setStock(rs.getInt("Stock"));
 
@@ -97,8 +104,13 @@ public class MedicamentoDAO {
         {
         List<Medicamento> lista = new ArrayList<>();
 
-        String sql = "SELECT * FROM Medicamentos WHERE Nombre LIKE ?"
-                +"AND Estado = 1";
+         String sql =
+                "SELECT M.*, C.Nombre AS Categoria "
+              + "FROM Medicamentos M "
+              + "INNER JOIN Categorias C "
+              + "ON M.ID_Categoria = C.ID_Categoria "
+              + "WHERE M.Nombre LIKE ? "
+              + "AND M.Estado = 1";
 
         try {
 
@@ -120,6 +132,8 @@ public class MedicamentoDAO {
 
                 med.setDescripcion(rs.getString("Descripcion"));
 
+                med.setIdCategoria(rs.getInt("ID_Categoria"));
+                
                 med.setCategoria(rs.getString("Categoria"));
 
                 med.setStock(rs.getInt("Stock"));
@@ -148,7 +162,7 @@ public class MedicamentoDAO {
         String sql = "UPDATE Medicamentos SET "
                 + "Nombre=?, "
                 + "Descripcion=?, "
-                + "Categoria=?, "
+                + "ID_Categoria=?, "
                 + "Stock=?, "
                 + "Precio=?, "
                 + "Fecha_Vencimiento=?, "
@@ -162,7 +176,7 @@ public class MedicamentoDAO {
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, med.getNombre());
             ps.setString(2, med.getDescripcion());
-            ps.setString(3, med.getCategoria());
+            ps.setInt(3, med.getIdCategoria());
             ps.setInt(4, med.getStock());
             ps.setDouble(5, med.getPrecio());
             ps.setString(6, med.getFechaVencimiento());
@@ -256,9 +270,12 @@ public class MedicamentoDAO {
         List<Medicamento> lista = new ArrayList<>();
 
         String sql =
-                "SELECT * "
-              + "FROM Medicamentos "
-              + "WHERE Stock > 0 AND Estado = 1";
+                "SELECT M.*, C.Nombre AS Categoria "
+              + "FROM Medicamentos M "
+              + "INNER JOIN Categorias C "
+              + "ON M.ID_Categoria = C.ID_Categoria "
+              + "WHERE M.Stock > 0 "
+              + "AND M.Estado = 1";
 
         try
         {
@@ -278,6 +295,8 @@ public class MedicamentoDAO {
 
                 med.setDescripcion(rs.getString("Descripcion"));
 
+                med.setIdCategoria(rs.getInt("ID_Categoria"));
+                
                 med.setCategoria(rs.getString("Categoria"));
 
                 med.setStock(rs.getInt("Stock"));
@@ -301,16 +320,20 @@ public class MedicamentoDAO {
 
         return lista;
     }
-    public boolean existeMedicamento(String nombre, String categoria) 
+    public boolean existeMedicamento(String nombre, int Idcategoria) 
     {
-        String sql = "SELECT COUNT(*) FROM Medicamentos WHERE Nombre = ? AND Categoria = ? AND Estado = 1";
+        String sql = "SELECT COUNT(*) "
+               + "FROM Medicamentos "
+               + "WHERE Nombre = ? "
+               + "AND ID_Categoria = ? "
+               + "AND Estado = 1";
 
         try {
             Connection con = cn.conectar();
             PreparedStatement ps = con.prepareStatement(sql);
 
             ps.setString(1, nombre);
-            ps.setString(2, categoria);
+            ps.setInt(2, Idcategoria);
 
             ResultSet rs = ps.executeQuery();
 

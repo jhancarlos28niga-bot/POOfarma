@@ -16,7 +16,7 @@ public class Conexion {
 
             String url = "jdbc:sqlserver://localhost:58496;"+ "databaseName=Hersil;" + "encrypt=true;" + "trustServerCertificate=true;";
 
-            String user = "HersilAdmin";
+            String user = "HersilAdmin"; 
             String password = "pollofrito123";
 
             con = DriverManager.getConnection(url, user, password);

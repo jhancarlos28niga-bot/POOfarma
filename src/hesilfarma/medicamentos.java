@@ -1,7 +1,9 @@
 
 package hesilfarma;
 
+import DAO.CategoriaDAO;
 import DAO.MedicamentoDAO;
+import Modelo.Categoria;
 import Modelo.Medicamento;
 import java.awt.Color;
 import java.awt.Font;
@@ -25,6 +27,7 @@ public class medicamentos extends javax.swing.JPanel {
     {
         initComponents();
         ((JTextField) txtFecha.getDateEditor().getUiComponent()).setEditable(false);
+        cargarCategorias();
         listarMedicamentos();
         ocultarColumnas();
         
@@ -88,6 +91,27 @@ public class medicamentos extends javax.swing.JPanel {
 
             modelo.addRow(fila);
         }
+    }
+    private void cargarCategorias() 
+    {
+
+        cbCategoria.removeAllItems();
+        Categoria seleccionar = new Categoria();
+        seleccionar.setIdCategoria(0);
+        seleccionar.setNombre("Seleccionar Categoría");
+        cbCategoria.addItem(seleccionar);
+
+        CategoriaDAO dao = new CategoriaDAO();
+
+        List<Categoria> lista = dao.listarCategorias();
+
+        for (Categoria categoria : lista)
+        {
+
+            cbCategoria.addItem(categoria);
+
+        }
+
     }
     
     @SuppressWarnings("unchecked")
@@ -288,8 +312,6 @@ public class medicamentos extends javax.swing.JPanel {
         btnLimpiar.setPreferredSize(new java.awt.Dimension(100, 30));
         btnLimpiar.addActionListener(this::btnLimpiarActionPerformed);
 
-        cbCategoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccionar Categoría", "Tabletas", "Jarabe", "Cápsulas", "Inyectable", "Crema" }));
-
         txtDescripcion.setColumns(20);
         txtDescripcion.setRows(5);
         txtDescripcion.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
@@ -371,7 +393,7 @@ public class medicamentos extends javax.swing.JPanel {
                     .addComponent(jLabel3)
                     .addComponent(txtBuscarMedicamento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 421, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 525, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
@@ -441,11 +463,13 @@ public class medicamentos extends javax.swing.JPanel {
                 JOptionPane.showMessageDialog(null,"Ingrese un nombre válido");
                 return;
             }
-           if(cbCategoria.getSelectedIndex()==0)
-           {
+           
+            Categoria categoria = (Categoria) cbCategoria.getSelectedItem();
+            if(categoria.getIdCategoria() == 0)
+            {
                 JOptionPane.showMessageDialog(null,"Seleccione una categoría");
                 return;
-           }
+            }
            if(txtStock.getText().trim().isEmpty())
            {
                JOptionPane.showMessageDialog(null,"Ingrese el stock");
@@ -507,19 +531,20 @@ public class medicamentos extends javax.swing.JPanel {
              }
           MedicamentoDAO dao = new MedicamentoDAO();
 
-            if (dao.existeMedicamento(txtNombre.getText().trim(),cbCategoria.getSelectedItem().toString())) 
+            if(dao.existeMedicamento(txtNombre.getText().trim(), categoria.getIdCategoria()))
             {
                 JOptionPane.showMessageDialog(null,"Ya existe un medicamento con ese nombre y categoría.");
                 return;
             }
-
+            
            Medicamento med = new Medicamento();
 
            med.setNombre(txtNombre.getText().trim());
 
            med.setDescripcion(txtDescripcion.getText().trim());
 
-           med.setCategoria(cbCategoria.getSelectedItem().toString());
+           med.setCategoria(categoria.getNombre());
+           med.setIdCategoria(categoria.getIdCategoria());
 
            med.setStock(stock);
 
@@ -595,8 +620,9 @@ public class medicamentos extends javax.swing.JPanel {
                 JOptionPane.showMessageDialog(null,"Seleccione un medicamento");
                 return;
             }
-
-            if(cbCategoria.getSelectedIndex()==0)
+            
+            Categoria categoria = (Categoria) cbCategoria.getSelectedItem();
+            if(categoria.getIdCategoria() == 0)
             {
                 JOptionPane.showMessageDialog(null,"Seleccione una categoría");
                 return;
@@ -674,7 +700,8 @@ public class medicamentos extends javax.swing.JPanel {
 
             med.setDescripcion(txtDescripcion.getText().trim());
 
-            med.setCategoria(cbCategoria.getSelectedItem().toString());
+            med.setCategoria(categoria.getNombre());
+            med.setIdCategoria(categoria.getIdCategoria());
 
             med.setStock(stock);
 
@@ -819,7 +846,7 @@ public class medicamentos extends javax.swing.JPanel {
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnGuardar;
     private javax.swing.JButton btnLimpiar;
-    private javax.swing.JComboBox<String> cbCategoria;
+    private javax.swing.JComboBox<Categoria> cbCategoria;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
