@@ -204,6 +204,12 @@ public class ventas extends javax.swing.JPanel {
         jLabel3.setForeground(new java.awt.Color(30, 78, 160));
         jLabel3.setText("Buscar Medicamentos:");
 
+        txtBuscarMed.setText("Colocar Nombre");
+        txtBuscarMed.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                txtBuscarMedMouseClicked(evt);
+            }
+        });
         txtBuscarMed.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 txtBuscarMedKeyReleased(evt);
@@ -682,6 +688,11 @@ public class ventas extends javax.swing.JPanel {
         }
         // TODO add your handling code here:
     }//GEN-LAST:event_txtBuscarMedKeyTyped
+
+    private void txtBuscarMedMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtBuscarMedMouseClicked
+        txtBuscarMed.setText("");
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtBuscarMedMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

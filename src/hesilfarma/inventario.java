@@ -208,6 +208,12 @@ public class inventario extends javax.swing.JPanel {
         jLabel3.setForeground(new java.awt.Color(30, 78, 160));
         jLabel3.setText("Buscar Medicamentos:");
 
+        txtBuscar.setText("Colocar Nombre");
+        txtBuscar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                txtBuscarMouseClicked(evt);
+            }
+        });
         txtBuscar.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 txtBuscarKeyReleased(evt);
@@ -456,6 +462,11 @@ public class inventario extends javax.swing.JPanel {
         }
         // TODO add your handling code here:
     }//GEN-LAST:event_txtBuscarKeyTyped
+
+    private void txtBuscarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtBuscarMouseClicked
+        txtBuscar.setText("");
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtBuscarMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

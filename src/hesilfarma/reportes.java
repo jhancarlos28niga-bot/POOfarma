@@ -394,8 +394,7 @@ public class reportes extends javax.swing.JPanel {
             lblNumeroVentas.setText(String.valueOf(dao.numeroVentasPorFecha(inicio,fin)));
 
             txtmedicamento.setText(dao.medicamentoMasVendidoPorFecha(inicio,fin));
-            fechaInicio.setDate(null);
-            fechaFin.setDate(null);
+
        }catch(Exception e)
        {
            JOptionPane.showMessageDialog(null,"Error al generar reporte: "+ e.getMessage());

@@ -277,6 +277,12 @@ public class Clientes extends javax.swing.JPanel {
 
         txtBuscar.setBackground(new java.awt.Color(255, 255, 255));
         txtBuscar.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtBuscar.setText("Colocar Nombre");
+        txtBuscar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                txtBuscarMouseClicked(evt);
+            }
+        });
         txtBuscar.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 txtBuscarKeyReleased(evt);
@@ -626,6 +632,11 @@ public class Clientes extends javax.swing.JPanel {
         }
         // TODO add your handling code here:
     }//GEN-LAST:event_txtBuscarKeyTyped
+
+    private void txtBuscarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtBuscarMouseClicked
+        txtBuscar.setText("");
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtBuscarMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -207,6 +207,12 @@ public class medicamentos extends javax.swing.JPanel {
         jLabel3.setForeground(new java.awt.Color(32, 72, 140));
         jLabel3.setText("Buscar Medicamento:");
 
+        txtBuscarMedicamento.setText("Colocar Nombre");
+        txtBuscarMedicamento.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                txtBuscarMedicamentoMouseClicked(evt);
+            }
+        });
         txtBuscarMedicamento.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 txtBuscarMedicamentoKeyReleased(evt);
@@ -393,7 +399,7 @@ public class medicamentos extends javax.swing.JPanel {
                     .addComponent(jLabel3)
                     .addComponent(txtBuscarMedicamento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 525, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 20, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
@@ -839,6 +845,11 @@ public class medicamentos extends javax.swing.JPanel {
         }
         // TODO add your handling code here:
     }//GEN-LAST:event_txtBuscarMedicamentoKeyTyped
+
+    private void txtBuscarMedicamentoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtBuscarMedicamentoMouseClicked
+        txtBuscarMedicamento.setText("");
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtBuscarMedicamentoMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
